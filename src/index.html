@@ -1,0 +1,24 @@
+{% extends "default.html" %} <!--Our page template-->
+{% set title = "Blink Style Importer" %} <!--Set our page title-->
+{% block header %} <!--If need we can set custom header then we have in default template-->
+{% endblock %}
+
+{% block content %} <!--Start Put page data-->
+
+<div id="mainPopup" class="card">
+	<h3 class="card-header">Import styles on page</h3>
+	<div class="card-block">
+		<form id="mainForm">
+			<div class="form-group">
+				<label for="cssStylesArea">Your styles:</label>
+				<textarea class="form-control" id="cssStylesArea" rows="10"></textarea>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Submit Styles</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endblock %} <!--end Put page data block-->
+{% block footer %}{% endblock %}
