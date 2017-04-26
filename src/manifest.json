@@ -14,7 +14,17 @@
     "default_popup": "index.html"
   },
   "permissions": [
-    "contentSettings"
+    "contentSettings",
+    "tabs",
+    "bookmarks",
+    "contextMenus",
+    "notifications",
+    "storage",
+    "activeTab",
+    "http://userstyles.org/",
+    "unlimitedStorage",
+    "http://stylebot.me/",
+    "<all_urls>"
   ],
   "omnibox": {
     "keyword": "extension"
