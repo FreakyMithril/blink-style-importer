@@ -4,21 +4,38 @@
 (($, window, document) => {
 	'use strict';
 
-  $('#mainForm').submit(function( event ) {
-
+  $('#mainForm').submit(function(event) {
     event.preventDefault();
 
     let textAreaHtml = document.getElementById('cssStylesArea');
-    alert(textAreaHtml.value);
+    let blinkStyles = document.getElementById('blinkStyles');
 
-    //document.getElementsByTagName('body')[0].removeChild(styles);
+    function notifyMessage(word) {
+      console.log(word);
+    }
 
-    let styles = document.createElement('style');
-    styles.type = 'text/stylesheet';
-    styles.id = 'blinkSTyles';
-    styles.innerHTML = '';
-    styles.innerHTML = textAreaHtml.value;
-    document.getElementsByTagName('body')[0].appendChild(styles);
+    function addStylesOnPage(){
+      let styles = document.createElement('style');
+      styles.type = 'text/css';
+      styles.id = 'blinkStyles';
+      styles.innerHTML = textAreaHtml.value;
+      document.getElementsByTagName('body')[0].appendChild(styles);
+      notifyMessage('Styles Added');
+    }
+
+    function removeStylesOnPage() {
+      document.getElementsByTagName('body')[0].removeChild(blinkStyles);
+      notifyMessage('Styles Removed');
+    }
+
+    if (blinkStyles  === null) {
+      notifyMessage('Blink style Not exist');
+      addStylesOnPage();
+    } else {
+      notifyMessage('Blink style Exist');
+      removeStylesOnPage();
+      addStylesOnPage();
+    }
   });
 
 })(jQuery, window, document);
