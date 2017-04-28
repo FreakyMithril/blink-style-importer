@@ -169,7 +169,7 @@ gulp.task('scripts', () => {
 	return gulp.src([
 		'!src/js/vendor/*.js',
 		'src/js/**/!(main)*.js',
-		'src/js/main.js'
+		'src/js/background.js'
 	])
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(babel())
@@ -339,7 +339,7 @@ gulp.task('scriptsDev', () => {
 	return gulp.src([
 		'!src/js/vendor/*.js',
 		'src/js/**/!(main)*.js',
-		'src/js/main.js'
+		'src/js/background.js'
 	])
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(sourcemaps.init())
