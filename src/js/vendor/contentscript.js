@@ -32,6 +32,9 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 
   if (request.greeting === "sendData") {
     addStylesOnPage();
+    chrome.storage.sync.set({'StoredData': data}, function() {
+      notifyMessage('Saved in Storage');
+    });
     sendResponse({currentData: data, success: true});
   }
 });
