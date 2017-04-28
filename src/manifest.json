@@ -14,16 +14,8 @@
     "default_popup": "index.html"
   },
   "permissions": [
-    "contentSettings",
-    "tabs",
-    "bookmarks",
-    "contextMenus",
-    "notifications",
     "storage",
     "activeTab",
-    "http://userstyles.org/",
-    "unlimitedStorage",
-    "http://stylebot.me/",
     "<all_urls>"
   ],
   "omnibox": {
@@ -34,17 +26,8 @@
       "matches": [
         "<all_urls>"
       ],
-      "css": [
-        "css/main.css"
-      ]
-    },
-    {
-      "matches": [
-        "<all_urls>"
-      ],
       "js": [
-        "js/vendor/jquery.js",
-        "js/main.js"
+        "js/vendor/content.js"
       ]
     }
   ]

@@ -10,11 +10,19 @@
 	<div class="card-block">
 		<form id="mainForm">
 			<div class="form-group">
-				<label for="cssStylesArea">Your styles:</label>
-				<textarea class="form-control" id="cssStylesArea" rows="10"></textarea>
+				<label for="cssStylesArea" id="cssStylesLabel">Your new styles:</label>
+				<textarea class="form-control" id="cssStylesArea" rows="5"></textarea>
 			</div>
 			<div class="form-group">
 				<button type="submit" class="btn btn-primary">Submit Styles</button>
+			</div>
+			<div class="form-group">
+				<label for="currentCss" id="currentCssLabel">Current custom styles:</label>
+				<textarea class="form-control" id="currentCss" rows="5" disabled></textarea>
+			</div>
+			<div class="form-group">
+				<label for="currentCss">Modal Log:</label>
+				<textarea class="form-control" id="customCsslog" rows="5" disabled></textarea>
 			</div>
 		</form>
 	</div>

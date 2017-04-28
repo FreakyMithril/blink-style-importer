@@ -1,52 +1,39 @@
-//========================================================================
-//Begin all initial scripts
-//========================================================================
-(($, window, document) => {
-	'use strict';
+document.addEventListener('DOMContentLoaded', function() {
+  'use strict';
 
-  $('#mainForm').submit(function(event) {
-    event.preventDefault();
+  let mainForm = document.getElementById('mainForm');
+  let textAreaLog = document.getElementById('customCsslog');
+
+  function notifyMessage(word) {
+    textAreaLog.value += word + "\n";
+  }
+
+  function mainFunction() {
 
     let textAreaHtml = document.getElementById('cssStylesArea');
-    let blinkStyles = document.getElementById('blinkStyles');
+    let labelForNewCss = document.getElementById('cssStylesLabel');
+    let stylesData = textAreaHtml.value;
 
-    function notifyMessage(word) {
-      console.log(word);
+    function SendStylesToPage(){
+      labelForNewCss.innerHTML = 'Form Submitted';
+      if (!stylesData) {
+        labelForNewCss.innerHTML = 'Invalid text provided';
+        notifyMessage( 'Please put styles');
+      } else {
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+          chrome.tabs.sendMessage(tabs[0].id, {data: stylesData}, function(response) {
+            labelForNewCss.innerHTML = 'Changed data in page';
+            notifyMessage('Send data to extension');
+          });
+        });
+      }
     }
+    SendStylesToPage();
+  }
 
-    function addStylesOnPage(){
-      let styles = document.createElement('style');
-      styles.type = 'text/css';
-      styles.id = 'blinkStyles';
-      styles.innerHTML = textAreaHtml.value;
-      document.getElementsByTagName('body')[0].appendChild(styles);
-      notifyMessage('Styles Added');
-    }
-
-    function removeStylesOnPage() {
-      document.getElementsByTagName('body')[0].removeChild(blinkStyles);
-      notifyMessage('Styles Removed');
-    }
-
-    if (blinkStyles  === null) {
-      notifyMessage('Blink style Not exist');
-      addStylesOnPage();
-    } else {
-      notifyMessage('Blink style Exist');
-      removeStylesOnPage();
-      addStylesOnPage();
-    }
-  });
-  // // Called when the user clicks on the browser action.
-  // chrome.browserAction.onClicked.addListener(function(tab) {
-  //   // No tabs or host permissions needed!
-  //   console.log('Turning ' + tab.url + ' red!');
-  //   chrome.tabs.executeScript({
-  //     code: 'document.body.style.backgroundColor="red"'
-  //   });
-  // });
-
-})(jQuery, window, document);
-//========================================================================
-//end all initial scripts
-//========================================================================
+  mainForm.onsubmit = function(event){
+    event.preventDefault();
+    notifyMessage('Form Submitted');
+    mainFunction();
+  };
+});
