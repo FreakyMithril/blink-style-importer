@@ -1,10 +1,11 @@
+function notifyMessage(word) {
+  console.info('Blink extension says: ' + word);
+}
+
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
   notifyMessage("Something happening from the extension");
 
-  function notifyMessage(word) {
-    console.log('Blink extension says: ' + word);
-  }
-
+  let data = request.data || {};
   let blinkStyles = document.getElementById('blinkStyles');
 
   function removeStylesOnPage() {
@@ -19,8 +20,6 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
     removeStylesOnPage();
   }
 
-  let data = request.data || {};
-
   function addStylesOnPage() {
     let styles = document.createElement('style');
     styles.type = 'text/css';
@@ -29,7 +28,10 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
     document.getElementsByTagName('body')[0].appendChild(styles);
     notifyMessage('Styles Added');
   }
-  addStylesOnPage();
 
-  sendResponse({data: data, success: true});
+
+  if (request.greeting === "sendData") {
+    addStylesOnPage();
+    sendResponse({currentData: data, success: true});
+  }
 });
