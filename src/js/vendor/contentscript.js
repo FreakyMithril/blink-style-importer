@@ -3,22 +3,21 @@ function notifyMessage(word) {
 }
 
 function removeStylesOnPage() {
-  document.getElementsByTagName('body')[0].removeChild(blinkStyles);
-  notifyMessage('Styles Removed');
-}
-
-chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-  notifyMessage("Something happening from the extension");
-
-  let data = request.data || {};
   let blinkStyles = document.getElementById('blinkStyles');
 
   if (blinkStyles  === null) {
     notifyMessage('Blink style Not exist');
   } else {
     notifyMessage('Blink style Exist');
-    removeStylesOnPage();
+    document.getElementsByTagName('body')[0].removeChild(blinkStyles);
+    notifyMessage('Styles Removed');
   }
+}
+
+chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
+  notifyMessage("Something happening from the extension");
+
+  let data = request.data || {};
 
   function addStylesOnPage() {
     let styles = document.createElement('style');
@@ -36,5 +35,8 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
       notifyMessage('Saved in Storage');
     });
     sendResponse({currentData: data, success: true});
+  } else if (request.greeting === "removeData") {
+      removeStylesOnPage();
+      sendResponse({success: true});
   }
 });
