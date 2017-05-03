@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   'use strict';
 
-  let mainForm = document.getElementById('mainForm');
+  let submitStyles = document.getElementById('submitStyles');
   let textAreaLog = document.getElementById('customCsslog');
   let currentCssArea = document.getElementById('currentCss');
 
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     sendStylesToPage();
   }
 
-  mainForm.onsubmit = function(event){
+  submitStyles.onclick = function(event) {
     event.preventDefault();
     notifyMessage('Form Submitted');
     mainFunction();
