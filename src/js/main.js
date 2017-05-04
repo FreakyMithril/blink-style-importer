@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const currentCssArea = document.getElementById('currentCss');
   const labelForNewCss = document.getElementById('cssStylesLabel');
 
+  // let editor = new wysihtml.Editor("cssStylesArea", {
+  //   style: true
+  // });
+
   function notifyMessage(word) {
     textAreaLog.value += word + "\n";
   }
