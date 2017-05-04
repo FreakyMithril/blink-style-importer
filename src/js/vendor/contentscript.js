@@ -5,16 +5,18 @@ function notifyMessage(word) {
 function removeStylesOnPage() {
   let blinkStyles = document.getElementById('blinkStyles');
 
-  if (blinkStyles  === null) {
+  if (blinkStyles === null) {
     notifyMessage('Blink style Not exist');
+    return false;
   } else {
     notifyMessage('Blink style Exist');
     document.getElementsByTagName('body')[0].removeChild(blinkStyles);
     notifyMessage('Styles Removed');
+    return true;
   }
 }
 
-chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   notifyMessage("Something happening from the extension");
 
   let data = request.data || {};
@@ -26,17 +28,24 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
     styles.innerHTML = data;
     document.getElementsByTagName('body')[0].appendChild(styles);
     notifyMessage('Styles Added');
+    return true;
   }
 
 
   if (request.greeting === "sendData") {
-    addStylesOnPage();
-    chrome.storage.sync.set({'StoredData': data}, function() {
-      notifyMessage('Saved in Storage');
-    });
-    sendResponse({currentData: data, success: true});
+    if (addStylesOnPage()) {
+      chrome.storage.sync.set({'StoredData': data}, function () {
+        notifyMessage('Saved in Storage');
+      });
+      sendResponse({currentData: data, success: true});
+    } else {
+      sendResponse({success: false});
+    }
   } else if (request.greeting === "removeData") {
-      removeStylesOnPage();
+    if (removeStylesOnPage()) {
       sendResponse({success: true});
+    } else {
+      sendResponse({success: false});
+    }
   }
 });

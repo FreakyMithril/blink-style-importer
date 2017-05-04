@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
   const submitStyles = document.getElementById('submitStyles');
@@ -7,12 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const currentCssArea = document.getElementById('currentCss');
 
   function notifyMessage(word) {
-    let currentdate = new Date();
-    let fineTime = currentdate.getMinutes() + ":" + currentdate.getSeconds();
-    textAreaLog.value += fineTime + ": " + word + "\n";
+    textAreaLog.value += word + "\n";
   }
 
-  function sendStylesToPage(){
+  function sendStylesToPage() {
     let textAreaHtml = document.getElementById('cssStylesArea');
     let labelForNewCss = document.getElementById('cssStylesLabel');
     let stylesData = textAreaHtml.value;
@@ -20,10 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
     labelForNewCss.innerHTML = 'Form Submitted';
     if (!stylesData) {
       labelForNewCss.innerHTML = 'Invalid text provided';
-      notifyMessage( 'Please put styles');
+      notifyMessage('Please put styles');
     } else {
-      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {greeting: "sendData", data: stylesData}, function(response) {
+      chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {greeting: "sendData", data: stylesData}, function (response) {
           labelForNewCss.innerHTML = 'Changed data in page';
           notifyMessage('Send data to extension');
           if (response.success === true) {
@@ -37,15 +35,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function clearStylesOnPage(){
+  function clearStylesOnPage() {
     let blinkStyles = document.getElementById('blinkStyles');
 
     let labelForNewCss = document.getElementById('cssStylesLabel');
 
     labelForNewCss.innerHTML = 'Send submit for clearing form';
 
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {greeting: "removeData"}, function(response) {
+    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {greeting: "removeData"}, function (response) {
         labelForNewCss.innerHTML = 'Submit new Blink styles on page';
         notifyMessage('Send data to extension');
         if (response.success === true) {
@@ -58,13 +56,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  submitStyles.onclick = function(event) {
+  submitStyles.onclick = function (event) {
     event.preventDefault();
-    notifyMessage('Sending Form Submission');
+    notifyMessage('Sending form Submission');
     sendStylesToPage();
   };
 
-  clearStyles.onclick = function(event) {
+  clearStyles.onclick = function (event) {
     event.preventDefault();
     notifyMessage('Sending submit for clear form');
     clearStylesOnPage();
