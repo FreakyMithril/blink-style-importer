@@ -6,7 +6,7 @@
   "icons": {
     "16": "img/icons/icon16.png",
     "48": "img/icons/icon48.png",
-    "128": "img/icons/icon128.png"
+    "100": "img/icons/icon100.png"
   },
   "background": {
     "scripts": ["js/vendor/background.js"]
