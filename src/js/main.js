@@ -3,8 +3,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const submitStyles = document.getElementById('submitStyles');
   const clearStyles = document.getElementById('clearStyles');
+  const loadStyles = document.getElementById('loadStyles');
   const textAreaLog = document.getElementById('customCsslog');
   const currentCssArea = document.getElementById('currentCss');
+  const labelForNewCss = document.getElementById('cssStylesLabel');
 
   function notifyMessage(word) {
     textAreaLog.value += word + "\n";
@@ -12,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function sendStylesToPage() {
     let textAreaHtml = document.getElementById('cssStylesArea');
-    let labelForNewCss = document.getElementById('cssStylesLabel');
     let stylesData = textAreaHtml.value;
 
     labelForNewCss.innerHTML = 'Form Submitted';
@@ -38,8 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function clearStylesOnPage() {
     let blinkStyles = document.getElementById('blinkStyles');
 
-    let labelForNewCss = document.getElementById('cssStylesLabel');
-
     labelForNewCss.innerHTML = 'Send submit for clearing form';
 
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
@@ -48,7 +47,26 @@ document.addEventListener('DOMContentLoaded', function () {
         notifyMessage('Send data to extension');
         if (response.success === true) {
           currentCssArea.value = '';
-          notifyMessage('Remove current styles');
+          notifyMessage('Removed current styles');
+        } else {
+          notifyMessage('Something wrong');
+        }
+      });
+    });
+  }
+
+  function loadStylesFromPage() {
+    let blinkStyles = document.getElementById('blinkStyles');
+
+    labelForNewCss.innerHTML = 'Sending submit for load Styles';
+
+    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {greeting: "loadData"}, function (response) {
+        labelForNewCss.innerHTML = 'Submit new Blink styles on page';
+        notifyMessage('Send data to extension');
+        if (response.success === true) {
+          currentCssArea.value = response.currentData;
+          notifyMessage('Loaded current styles');
         } else {
           notifyMessage('Something wrong');
         }
@@ -66,5 +84,11 @@ document.addEventListener('DOMContentLoaded', function () {
     event.preventDefault();
     notifyMessage('Sending submit for clear form');
     clearStylesOnPage();
+  };
+
+  loadStyles.onclick = function (event) {
+    event.preventDefault();
+    notifyMessage('Sending submit for load Styles');
+    loadStylesFromPage();
   };
 });

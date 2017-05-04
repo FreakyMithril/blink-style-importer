@@ -16,6 +16,18 @@ function removeStylesOnPage() {
   }
 }
 
+function currentStylesOnPage() {
+  let blinkStyles = document.getElementById('blinkStyles');
+
+  if (blinkStyles === null) {
+    notifyMessage('Blink style Not exist, cant load');
+    return false;
+  } else {
+    notifyMessage('Blink style Exist, try to load');
+    return blinkStyles.innerHTML;
+  }
+}
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   notifyMessage("Something happening from the extension");
 
@@ -45,6 +57,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   } else if (request.greeting === "removeData") {
     if (removeStylesOnPage()) {
       sendResponse({success: true});
+    } else {
+      sendResponse({success: false});
+    }
+  } else if (request.greeting === "loadData") {
+    if (currentStylesOnPage()) {
+      sendResponse({currentData: currentStylesOnPage(), success: true});
     } else {
       sendResponse({success: false});
     }
