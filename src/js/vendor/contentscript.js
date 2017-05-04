@@ -22,6 +22,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   let data = request.data || {};
 
   function addStylesOnPage() {
+    removeStylesOnPage();
     let styles = document.createElement('style');
     styles.type = 'text/css';
     styles.id = 'blinkStyles';
