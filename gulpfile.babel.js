@@ -56,6 +56,8 @@ gulp.task('html', ['copyVendorJs'], () => {
 		}))
 		.pipe(inject(
 			gulp.src([
+        '!dist/js/vendor/background.js',
+        '!dist/js/vendor/contentscript.js',
 				'dist/js/vendor/jquery.js',
 				'dist/js/vendor/*.js'
 			], {
@@ -234,6 +236,8 @@ gulp.task('htmlDev', ['copyVendorJsDev'], () => {
 		}))
 		.pipe(inject(
 			gulp.src([
+			  '!dev/js/vendor/background.js',
+        '!dev/js/vendor/contentscript.js',
 				'dev/js/vendor/jquery.js',
 				'dev/js/vendor/*.js'
 			], {
