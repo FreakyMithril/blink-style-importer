@@ -5,43 +5,18 @@
 
 {% block content %} <!--Start Put page data-->
 
-<div id="mainPopup" class="card">
-	<h3 class="card-header">Import styles on page</h3>
-	<div class="card-block">
-		<form id="mainForm">
-			<div class="form-group">
-				<label for="cssStylesArea" id="cssStylesLabel">Your new styles:</label>
-				<textarea class="form-control" id="cssStylesArea" rows="5" autofocus></textarea>
-			</div>
-			<div class="form-group d-flex justify-content-between">
-				<button id="submitStyles" type="submit" class="btn btn-primary">Submit Styles</button>
-				<button id="loadStyles" type="button" class="btn btn-warning">Load page Styles</button>
-				<button id="clearStyles" type="button" class="btn btn-danger">Clear Styles</button>
-			</div>
-			<div class="form-group">
-				<label for="currentCss" id="currentCssLabel">Current custom styles:</label>
-				<textarea class="form-control" id="currentCss" rows="5" disabled></textarea>
-			</div>
-			<div class="form-group">
-				<label for="currentCss">Modal dialog Log:</label>
-				<textarea class="form-control" id="customCsslog" rows="5" disabled></textarea>
-			</div>
-		</form>
-	</div>
-</div>
-
 <!-- Simple header with fixed tabs. -->
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
             mdl-layout--fixed-tabs">
 	<header class="mdl-layout__header">
 		<div class="mdl-layout__header-row">
 			<!-- Title -->
-			<span class="mdl-layout-title">Import styles on page</span>
+			<span class="mdl-layout-title">Blink Style Importer</span>
 		</div>
 		<!-- Tabs -->
 		<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-			<a href="#fixed-tab-1" class="mdl-layout__tab is-active">Tab 1</a>
-			<a href="#fixed-tab-2" class="mdl-layout__tab">Tab 2</a>
+			<a href="#fixed-tab-1" class="mdl-layout__tab is-active">Blink</a>
+			<a href="#fixed-tab-2" class="mdl-layout__tab">Page</a>
 			<a href="#fixed-tab-3" class="mdl-layout__tab">Log</a>
 		</div>
 	</header>
@@ -60,24 +35,92 @@
 				<div class="mdl-grid">
 					<div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
 						<div class="mdl-card__title mdl-card--border">
-							<h2 class="mdl-card__title-text">Your new styles:</h2>
+							<h2 class="mdl-card__title-text" id="cssStylesLabel">Your new styles:</h2>
 						</div>
 						<div class="mdl-card__supporting-text">
-							The Sky Tower is an observation and telecommunications tower located in Auckland,
-							New Zealand. It is 328 metres (1,076 ft) tall, making it the tallest man-made structure
-							in the Southern Hemisphere.
-							<!-- Floating Multiline Textfield -->
 							<form action="#">
 								<div class="mdl-textfield mdl-js-textfield">
-									<textarea class="mdl-textfield__input" type="text" rows= "5" id="sample5" ></textarea>
-									<label class="mdl-textfield__label" for="sample5">Text lines...</label>
+									<textarea class="mdl-textfield__input" type="text" rows="5" id="cssStylesArea"
+									          autofocus></textarea>
+									<label class="mdl-textfield__label" for="cssStylesArea">Put your styles...</label>
 								</div>
 							</form>
 						</div>
 						<div class="mdl-card__actions mdl-card--border">
-							<button class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+							<button class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+							        id="submitStyles" type="submit">
 								Submit Styles
 							</button>
+						</div>
+						<div class="mdl-card__menu">
+							<button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn1">
+								<i class="material-icons">more_vert</i>
+							</button>
+							<ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn1">
+								<li class="mdl-menu__item">Lorem</li>
+								<li class="mdl-menu__item" disabled>Ipsum</li>
+								<li class="mdl-menu__item">Dolor</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="mdl-layout__tab-panel" id="fixed-tab-2">
+			<div class="page-content">
+				<div class="mdl-grid">
+					<div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
+						<div class="mdl-card__title mdl-card--border">
+							<h2 class="mdl-card__title-text">Current custom styles</h2>
+						</div>
+						<div class="mdl-card__supporting-text">
+							<form action="#">
+								<div class="mdl-textfield mdl-js-textfield">
+									<textarea class="mdl-textfield__input" type="text" rows="5" id="currentCss"
+									          disabled></textarea>
+								</div>
+							</form>
+						</div>
+						<div class="mdl-card__actions mdl-card--border">
+							<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+							        id="loadStyles" type="button">
+								Load page styles
+							</button>
+							<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+							        id="clearStyles" type="button">
+								Clear Styles
+							</button>
+						</div>
+						<div class="mdl-card__menu">
+							<button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn2">
+								<i class="material-icons">more_vert</i>
+							</button>
+							<ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn2">
+								<li class="mdl-menu__item">Lorem</li>
+								<li class="mdl-menu__item" disabled>Ipsum</li>
+								<li class="mdl-menu__item">Dolor</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="mdl-layout__tab-panel" id="fixed-tab-3">
+			<div class="page-content">
+				<div class="mdl-grid">
+					<div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
+						<div class="mdl-card__title mdl-card--border">
+							<h2 class="mdl-card__title-text">Modal dialog log</h2>
+						</div>
+						<div class="mdl-card__supporting-text">
+							<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+								<thead>
+								<tr>
+									<th class="mdl-data-table__cell--non-numeric">Event Name</th>
+								</tr>
+								</thead>
+								<tbody id="customCsslog"></tbody>
+							</table>
 						</div>
 						<div class="mdl-card__menu">
 							<button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn3">
@@ -91,16 +134,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		</section>
-		<section class="mdl-layout__tab-panel" id="fixed-tab-2">
-			<div class="page-content">
-
-			</div>
-		</section>
-		<section class="mdl-layout__tab-panel" id="fixed-tab-3">
-			<div class="page-content">
-
 			</div>
 		</section>
 	</main>
