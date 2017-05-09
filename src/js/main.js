@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	const textAreaLog = document.getElementById('customCsslog');
 	const currentCssArea = document.getElementById('currentCss');
 	const labelForNewCss = document.getElementById('cssStylesLabel');
+	const snackbarContainer = document.getElementById('toastLog');
 
 	// let editor = new wysihtml.Editor("cssStylesArea", {
 	//   style: true
@@ -14,6 +15,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	function notifyMessage(word) {
 		textAreaLog.innerHTML += "<tr><td class='mdl-data-table__cell--non-numeric'>" + word + "</td></tr>";
+		let data = {
+			message: 'Log: ' + word,
+			timeout: 1000
+		};
+		snackbarContainer.MaterialSnackbar.showSnackbar(data);
 	}
 
 	function sendStylesToPage() {
@@ -78,21 +84,21 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	}
 
-	submitStyles.onclick = function (event) {
+	submitStyles.addEventListener('click', function(event) {
 		event.preventDefault();
 		notifyMessage('Sending form Submission');
 		sendStylesToPage();
-	};
+	});
 
-	clearStyles.onclick = function (event) {
+	clearStyles.addEventListener('click', function(event) {
 		event.preventDefault();
 		notifyMessage('Sending submit for clear form');
 		clearStylesOnPage();
-	};
+	});
 
-	loadStyles.onclick = function (event) {
+	loadStyles.addEventListener('click', function(event) {
 		event.preventDefault();
 		notifyMessage('Sending submit for load Styles');
 		loadStylesFromPage();
-	};
+	});
 });
