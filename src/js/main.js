@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	const labelForNewCss = document.getElementById('cssStylesLabel');
 	const snackbarContainer = document.getElementById('toastLog');
 
+  let myCodeMirror = CodeMirror.fromTextArea(cssStylesArea);
+
 	function notifyMessage(word) {
 		textAreaLog.innerHTML += "<tr><td class='mdl-data-table__cell--non-numeric'>" + word + "</td></tr>";
 		let data = {
@@ -19,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	function sendStylesToPage() {
+    myCodeMirror.save();
+
 		let textAreaHtml = document.getElementById('cssStylesArea');
 		let stylesData = textAreaHtml.value;
 
