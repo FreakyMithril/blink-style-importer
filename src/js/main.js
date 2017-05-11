@@ -9,10 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	const labelForNewCss = document.getElementById('cssStylesLabel');
 	const snackbarContainer = document.getElementById('toastLog');
 
-	// let editor = new wysihtml.Editor("cssStylesArea", {
-	//   style: true
-	// });
-
 	function notifyMessage(word) {
 		textAreaLog.innerHTML += "<tr><td class='mdl-data-table__cell--non-numeric'>" + word + "</td></tr>";
 		let data = {
