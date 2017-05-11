@@ -1,6 +1,6 @@
 body, html {
-    height: 100%;
     font-family: Helvetica, Ubuntu, Arial, sans-serif;
+    height: 100%;
 }
 //end for fixed height bottom footer
 
@@ -30,7 +30,7 @@ a {
 //end no browser support
 
 body {
-    min-height: 200px;
     min-width: 500px;
+    min-height: 600px;
 }
 
