@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	function sendStylesToPage() {
     myCodeMirror.save();
-
+    
 		let textAreaHtml = document.getElementById('cssStylesArea');
 		let stylesData = textAreaHtml.value;
 
