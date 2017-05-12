@@ -12,7 +12,13 @@ document.addEventListener('DOMContentLoaded', function () {
 	    lineNumbers: true,
 	    showCursorWhenSelecting: false,
 	    autofocus: false,
-	    mode:  "css"
+	    mode:  "css",
+	    autoCloseBrackets: true,
+	    matchBrackets: true,
+
+	    extraKeys: {
+		    "Ctrl-Space": "autocomplete"
+	    },
     });
 
 	function notifyMessage(word) {

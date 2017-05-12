@@ -172,6 +172,9 @@ gulp.task('scripts', () => {
 		'!src/js/vendor/*.js',
 		'src/js/material.js',
 		'src/js/css.js',
+		'src/js/show-hint.js',
+		'src/js/anyword-hint.js',
+		'src/js/css-hint.js',
 		'src/js/**/!(main)*.js',
 		'src/js/main.js'
 	])
@@ -346,6 +349,9 @@ gulp.task('scriptsDev', () => {
 		'!src/js/vendor/*.js',
 		'src/js/material.js',
 		'src/js/css.js',
+		'src/js/show-hint.js',
+		'src/js/anyword-hint.js',
+		'src/js/css-hint.js',
 		'src/js/**/!(main)*.js',
 		'src/js/main.js'
 	])
