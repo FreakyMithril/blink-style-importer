@@ -13,12 +13,13 @@ document.addEventListener('DOMContentLoaded', function () {
 	    showCursorWhenSelecting: false,
 	    autofocus: false,
 	    mode:  "css",
-	    autoCloseBrackets: true,
-	    matchBrackets: true,
-
+	    gutters: ["CodeMirror-lint-markers"],
+	    lint: true,
 	    extraKeys: {
 		    "Ctrl-Space": "autocomplete"
 	    },
+	    autoCloseBrackets: true,
+	    matchBrackets: true
     });
 
 	function notifyMessage(word) {
