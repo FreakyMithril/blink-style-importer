@@ -10,6 +10,7 @@
 }
 
 .mdl-card__supporting-text {
+	min-height: 260px;
 	width: calc(100% - 32px);
 }
 
@@ -19,6 +20,10 @@
 	}
 }
 
+textarea {
+	min-height: 207px;
+}
+
 .CodeMirror {
-    height: 200px;
+    height: 220px;
 }

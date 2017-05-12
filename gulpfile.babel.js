@@ -170,6 +170,8 @@ gulp.task('images', () => {
 gulp.task('scripts', () => {
 	return gulp.src([
 		'!src/js/vendor/*.js',
+		'src/js/material.js',
+		'src/js/css.js',
 		'src/js/**/!(main)*.js',
 		'src/js/main.js'
 	])
@@ -342,6 +344,8 @@ gulp.task('imagesDev', () => {
 gulp.task('scriptsDev', () => {
 	return gulp.src([
 		'!src/js/vendor/*.js',
+		'src/js/material.js',
+		'src/js/css.js',
 		'src/js/**/!(main)*.js',
 		'src/js/main.js'
 	])

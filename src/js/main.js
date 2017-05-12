@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-	'use strict';
-
 	const submitStyles = document.getElementById('submitStyles');
 	const clearStyles = document.getElementById('clearStyles');
 	const loadStyles = document.getElementById('loadStyles');
@@ -8,8 +6,14 @@ document.addEventListener('DOMContentLoaded', function () {
 	const currentCssArea = document.getElementById('currentCss');
 	const labelForNewCss = document.getElementById('cssStylesLabel');
 	const snackbarContainer = document.getElementById('toastLog');
+	let textAreaHtml = document.getElementById('cssStylesArea');
 
-  let myCodeMirror = CodeMirror.fromTextArea(cssStylesArea);
+    let myCodeMirror = CodeMirror.fromTextArea(textAreaHtml, {
+	    lineNumbers: true,
+	    showCursorWhenSelecting: false,
+	    autofocus: false,
+	    mode:  "css"
+    });
 
 	function notifyMessage(word) {
 		textAreaLog.innerHTML += "<tr><td class='mdl-data-table__cell--non-numeric'>" + word + "</td></tr>";
@@ -21,9 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	function sendStylesToPage() {
-    myCodeMirror.save();
-    
-		let textAreaHtml = document.getElementById('cssStylesArea');
+        myCodeMirror.save();
+
 		let stylesData = textAreaHtml.value;
 
 		labelForNewCss.innerHTML = 'Form Submitted';
