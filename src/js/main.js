@@ -8,19 +8,19 @@ document.addEventListener('DOMContentLoaded', function () {
 	const snackbarContainer = document.getElementById('toastLog');
 	let textAreaHtml = document.getElementById('cssStylesArea');
 
-    let myCodeMirror = CodeMirror.fromTextArea(textAreaHtml, {
-	    lineNumbers: true,
-	    showCursorWhenSelecting: false,
-	    autofocus: false,
-	    mode:  "css",
-	    gutters: ["CodeMirror-lint-markers"],
-	    lint: true,
-	    extraKeys: {
-		    "Ctrl-Space": "autocomplete"
-	    },
-	    autoCloseBrackets: true,
-	    matchBrackets: true
-    });
+	let myCodeMirror = CodeMirror.fromTextArea(textAreaHtml, {
+		lineNumbers: true,
+		showCursorWhenSelecting: false,
+		autofocus: false,
+		mode: "css",
+		gutters: ["CodeMirror-lint-markers"],
+		lint: true,
+		extraKeys: {
+			"Ctrl-Space": "autocomplete"
+		},
+		autoCloseBrackets: true,
+		matchBrackets: true
+	});
 
 	function notifyMessage(word) {
 		textAreaLog.innerHTML += "<tr><td class='mdl-data-table__cell--non-numeric'>" + word + "</td></tr>";
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	function sendStylesToPage() {
-        myCodeMirror.save();
+		myCodeMirror.save();
 
 		let stylesData = textAreaHtml.value;
 
@@ -94,19 +94,19 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	}
 
-	submitStyles.addEventListener('click', function(event) {
+	submitStyles.addEventListener('click', function (event) {
 		event.preventDefault();
 		notifyMessage('Sending form Submission');
 		sendStylesToPage();
 	});
 
-	clearStyles.addEventListener('click', function(event) {
+	clearStyles.addEventListener('click', function (event) {
 		event.preventDefault();
 		notifyMessage('Sending submit for clear form');
 		clearStylesOnPage();
 	});
 
-	loadStyles.addEventListener('click', function(event) {
+	loadStyles.addEventListener('click', function (event) {
 		event.preventDefault();
 		notifyMessage('Sending submit for load Styles');
 		loadStylesFromPage();
