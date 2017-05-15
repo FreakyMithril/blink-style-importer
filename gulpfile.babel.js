@@ -171,13 +171,13 @@ gulp.task('scripts', () => {
 	return gulp.src([
 		'!src/js/vendor/*.js',
 		'src/js/material.js',
-		'src/js/css.js',
-		'src/js/show-hint.js',
-		'src/js/anyword-hint.js',
-		'src/js/css-hint.js',
-		'src/js/csslint.js',
-		'src/js/lint.js',
-		'src/js/css-lint.js',
+		'src/js/editor/css.js',
+		'src/js/editor/show-hint.js',
+		'src/js/editor/anyword-hint.js',
+		'src/js/editor/css-hint.js',
+		'src/js/editor/csslint.js',
+		'src/js/editor/lint.js',
+		'src/js/editor/css-lint.js',
 		'src/js/**/!(main)*.js',
 		'src/js/main.js'
 	])
@@ -351,13 +351,13 @@ gulp.task('scriptsDev', () => {
 	return gulp.src([
 		'!src/js/vendor/*.js',
 		'src/js/material.js',
-		'src/js/css.js',
-		'src/js/show-hint.js',
-		'src/js/anyword-hint.js',
-		'src/js/css-hint.js',
-		'src/js/csslint.js',
-		'src/js/lint.js',
-		'src/js/css-lint.js',
+		'src/js/editor/css.js',
+		'src/js/editor/show-hint.js',
+		'src/js/editor/anyword-hint.js',
+		'src/js/editor/css-hint.js',
+		'src/js/editor/csslint.js',
+		'src/js/editor/lint.js',
+		'src/js/editor/css-lint.js',
 		'src/js/**/!(main)*.js',
 		'src/js/main.js'
 	])
