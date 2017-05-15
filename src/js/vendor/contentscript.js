@@ -2,6 +2,18 @@ function notifyMessage(word) {
   console.info('Blink extension says: ' + word);
 }
 
+function saveToStorage(data) {
+	chrome.storage.sync.set({'StoredData': data}, function () {
+		notifyMessage('Saved in Storage');
+	});
+}
+
+function readFromStorage(key) {
+	chrome.storage.sync.get(key, function (obj) {
+		console.log(obj);
+	});
+}
+
 function removeStylesOnPage() {
   let blinkStyles = document.getElementById('blinkStyles');
 
@@ -47,9 +59,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
   if (request.greeting === "sendData") {
     if (addStylesOnPage()) {
-      chrome.storage.sync.set({'StoredData': data}, function () {
-        notifyMessage('Saved in Storage');
-      });
+      saveToStorage(data);
       sendResponse({currentData: data, success: true});
     } else {
       sendResponse({success: false});
@@ -62,9 +72,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
   } else if (request.greeting === "loadData") {
     if (currentStylesOnPage()) {
+	    readFromStorage('StoredData');
       sendResponse({currentData: currentStylesOnPage(), success: true});
     } else {
       sendResponse({success: false});
+	    readFromStorage('StoredData');
     }
   }
 });
