@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			notifyMessage('Please put styles');
 		} else {
 			chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-				chrome.tabs.sendMessage(tabs[0].id, {greeting: "sendData", data: stylesData}, function (response) {
+				let elementUrl = tabs[0].url;
+				chrome.tabs.sendMessage(tabs[0].id, {greeting: "sendData", data: stylesData, dataUrl: elementUrl}, function (response) {
 					labelForNewCss.innerHTML = 'Changed data in page';
 					notifyMessage('Send data to extension');
 					if (response.success === true) {
