@@ -1,6 +1,17 @@
 function notifyMessage(word) {
   console.info('Blink extension says: ' + word);
 }
+function extractHostname(url) {
+	let hostname;
+	if (url.indexOf("://") > -1) {
+		hostname = url.split('/')[2];
+	}
+	else {
+		hostname = url.split('/')[0];
+	}
+	hostname = hostname.split(':')[0];
+	return hostname;
+}
 
 function saveToStorage(styles, url) {
 	chrome.storage.sync.get(function(items) {
@@ -11,7 +22,6 @@ function saveToStorage(styles, url) {
 			notifyMessage('No Data, create new');
 			items.data = [{pageUrl: url, blinkStyle: styles}];
 		}
-
 		chrome.storage.sync.set(items, function() {
 			notifyMessage('Data successfully saved to the storage!');
 		});

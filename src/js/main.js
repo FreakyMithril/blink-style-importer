@@ -30,6 +30,17 @@ document.addEventListener('DOMContentLoaded', function () {
 		};
 		snackbarContainer.MaterialSnackbar.showSnackbar(data);
 	}
+	function extractHostname(url) {
+		let hostname;
+		if (url.indexOf("://") > -1) {
+			hostname = url.split('/')[2];
+		}
+		else {
+			hostname = url.split('/')[0];
+		}
+		hostname = hostname.split(':')[0];
+		return hostname;
+	}
 
 	function sendStylesToPage() {
 		myCodeMirror.save();
@@ -42,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			notifyMessage('Please put styles');
 		} else {
 			chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-				let elementUrl = tabs[0].url;
+				let elementUrl = extractHostname(tabs[0].url);
 				chrome.tabs.sendMessage(tabs[0].id, {greeting: "sendData", data: stylesData, dataUrl: elementUrl}, function (response) {
 					labelForNewCss.innerHTML = 'Changed data in page';
 					notifyMessage('Send data to extension');
