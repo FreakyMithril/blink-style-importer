@@ -2,25 +2,19 @@ function notifyMessage(word) {
   console.info('Blink extension says: ' + word);
 }
 
-function saveToStorage(data, url) {
-	chrome.storage.sync.get(null, function (obj) {
-		if (obj !== undefined) {
-		  let tempObj = obj.alldata;
-			console.log(tempObj);
-			let element = {data, url};
-			tempObj.push(element);
-			chrome.storage.sync.set({tempObj}, function () {
-				notifyMessage('Saved in Storage');
-			});
-        }
-        else {
-			let alldata = [];
-			let element = {data, url};
-			alldata.push(element);
-			chrome.storage.sync.set({alldata}, function () {
-				notifyMessage('Saved in Storage');
-			});
-        }
+function saveToStorage(styles, url) {
+	chrome.storage.sync.get(function(items) {
+		if (Object.keys(items).length > 0 && items.data) {
+			notifyMessage('Find data, adding new');
+			items.data.push({pageUrl: url, blinkStyle: styles});
+		} else {
+			notifyMessage('No Data, create new');
+			items.data = [{pageUrl: url, blinkStyle: styles}];
+		}
+
+		chrome.storage.sync.set(items, function() {
+			notifyMessage('Data successfully saved to the storage!');
+		});
 	});
 }
 
@@ -58,7 +52,6 @@ function currentStylesOnPage() {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   notifyMessage("Something happening from the extension");
-  //chrome.storage.sync.clear();
   let dataUrl = request.dataUrl || {};
   let data = request.data || {};
 
@@ -78,23 +71,24 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (addStylesOnPage()) {
       saveToStorage(data, dataUrl);
       sendResponse({currentData: data, success: true});
-	    readFromStorage();
     } else {
       sendResponse({success: false});
     }
   } else if (request.greeting === "removeData") {
     if (removeStylesOnPage()) {
+	    chrome.storage.sync.clear();
       sendResponse({success: true});
     } else {
+	    chrome.storage.sync.clear();
       sendResponse({success: false});
     }
   } else if (request.greeting === "loadData") {
     if (currentStylesOnPage()) {
-	    //readFromStorage('StoredData');
+	    readFromStorage();
       sendResponse({currentData: currentStylesOnPage(), success: true});
     } else {
+	    readFromStorage();
       sendResponse({success: false});
-	    //readFromStorage('StoredData');
     }
   }
 });
