@@ -119,7 +119,8 @@ gulp.task('copyFonts', () => {
 gulp.task('copyData', () => {
 	return gulp.src([
 		'src/data/**/*',
-		'src/manifest.json'
+		'src/manifest.json',
+		'src/readme.md'
 	], {base: './src/'})
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(gulp.dest('dist/'))
@@ -334,7 +335,8 @@ gulp.task('copyFontsDev', () => {
 gulp.task('copyDataDev', () => {
 	return gulp.src([
 		'src/data/**/*',
-		'src/manifest.json'
+		'src/manifest.json',
+		'src/readme.md'
 	], {base: './src/'})
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(gulp.dest('dev/'))
