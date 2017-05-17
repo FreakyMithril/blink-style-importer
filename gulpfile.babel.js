@@ -121,6 +121,7 @@ gulp.task('copyData', () => {
 		'src/data/**/*',
 		'src/manifest.json',
 		'src/changelog.md',
+		'src/LICENSE',
 		'src/readme.md'
 	], {base: './src/'})
 		.pipe(plumber(plumberErrorNotify))
@@ -338,6 +339,7 @@ gulp.task('copyDataDev', () => {
 		'src/data/**/*',
 		'src/manifest.json',
 		'src/changelog.md',
+		'src/LICENSE',
 		'src/readme.md'
 	], {base: './src/'})
 		.pipe(plumber(plumberErrorNotify))

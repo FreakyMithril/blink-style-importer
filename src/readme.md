@@ -1,7 +1,7 @@
 ### Blink Style Importer
 Chrome browser extension for adding custom css styles on any page.
 With Material design and code editor.   
-First Version will not save data after page reload.
+First version will not save data after page reload.
 #### Features:
 * Autocomplete
 * CSS Code Linting
