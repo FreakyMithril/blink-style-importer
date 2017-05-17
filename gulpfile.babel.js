@@ -32,9 +32,30 @@ gulp.task('clean', () => del(['dist', 'dev']));
 //start only deploy tasks
 gulp.task('copyVendorJs', () => {
 	return gulp.src([
+		'!src/js/vendor/codemirror.min.js',
 		'src/js/vendor/!(jquery)*.js',
 		'src/js/vendor/*.js',
 		'src/js/vendor/(jquery)*.js'
+	])
+		.pipe(plumber(plumberErrorNotify))
+		.pipe(babel({
+			presets: ['es2015']
+		}))
+		.pipe(uglify())
+		.pipe(gulp.dest('dist/js/vendor'))
+		.pipe(notify({
+			"title": "Another scripts",
+			"message": "Scripts moved!",
+			"onLast": true
+		}))
+		.pipe(reload({
+			stream: true
+		}));
+});
+
+gulp.task('copyNotCompileJs', () => {
+	return gulp.src([
+		'src/js/vendor/codemirror.min.js',
 	])
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(gulp.dest('dist/js/vendor'))
@@ -56,8 +77,8 @@ gulp.task('html', ['copyVendorJs'], () => {
 		}))
 		.pipe(inject(
 			gulp.src([
-        '!dist/js/vendor/background.js',
-        '!dist/js/vendor/contentscript.js',
+				'!dist/js/vendor/background.js',
+				'!dist/js/vendor/contentscript.js',
 				'dist/js/vendor/jquery.js',
 				'dist/js/vendor/*.js'
 			], {
@@ -96,10 +117,10 @@ gulp.task('copyFonts', () => {
 });
 
 gulp.task('copyData', () => {
-  return gulp.src([
-    'src/data/**/*',
-    'src/manifest.json'
-  ], {base: './src/'})
+	return gulp.src([
+		'src/data/**/*',
+		'src/manifest.json'
+	], {base: './src/'})
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(gulp.dest('dist/'))
 		.pipe(notify({
@@ -143,19 +164,19 @@ gulp.task('images', () => {
 		'src/img/**/*'
 	])
 		.pipe(plumber(plumberErrorNotify))
-    .pipe(imagemin([
-      imagemin.gifsicle({interlaced: true}),
-      imagemin.jpegtran({progressive: true}),
-      pngquant(),
-      imagemin.svgo({
-        plugins: [
-          {removeViewBox: false},
-          {removeTitle: true},
-          {removeDesc: true},
-          {removeComments: true}
-        ]
-      })
-    ]))
+		.pipe(imagemin([
+			imagemin.gifsicle({interlaced: true}),
+			imagemin.jpegtran({progressive: true}),
+			pngquant(),
+			imagemin.svgo({
+				plugins: [
+					{removeViewBox: false},
+					{removeTitle: true},
+					{removeDesc: true},
+					{removeComments: true}
+				]
+			})
+		]))
 		.pipe(gulp.dest('dist/img'))
 		.pipe(notify({
 			"title": "Images",
@@ -182,7 +203,9 @@ gulp.task('scripts', () => {
 		'src/js/main.js'
 	])
 		.pipe(plumber(plumberErrorNotify))
-		.pipe(babel())
+		.pipe(babel({
+			presets: ['es2015']
+		}))
 		.pipe(concat('main.js')) /*build single file*/
 		.pipe(uglify())
 		.pipe(size({
@@ -207,7 +230,8 @@ gulp.task('default', ['clean'], (cb) => {
 			'scripts',
 			'copyFonts',
 			'html',
-			'copyVendorJs'
+			'copyVendorJs',
+			'copyNotCompileJs'
 		],
 		'images', /*images optimization can be with delay, must wait*/
 		cb
@@ -218,12 +242,35 @@ gulp.task('default', ['clean'], (cb) => {
 //start only dev tasks
 gulp.task('copyVendorJsDev', () => {
 	return gulp.src([
+		'!src/js/vendor/codemirror.min.js',
 		'src/js/vendor/!(jquery)*.js',
 		'src/js/vendor/*.js',
 		'src/js/vendor/(jquery)*.js'
 	])
 		.pipe(plumber(plumberErrorNotify))
+		.pipe(babel({
+			presets: ['es2015']
+		}))
+		.pipe(uglify())
+		.pipe(sourcemaps.write())
+
 		.pipe(changed('dev/js/vendor'))
+		.pipe(gulp.dest('dev/js/vendor'))
+		.pipe(notify({
+			"title": "Another scripts",
+			"message": "Scripts moved!",
+			"onLast": true
+		}))
+		.pipe(reload({
+			stream: true
+		}));
+});
+
+gulp.task('copyNotCompileJsDev', () => {
+	return gulp.src([
+		'src/js/vendor/codemirror.min.js',
+	])
+		.pipe(plumber(plumberErrorNotify))
 		.pipe(gulp.dest('dev/js/vendor'))
 		.pipe(notify({
 			"title": "Another scripts",
@@ -244,8 +291,8 @@ gulp.task('htmlDev', ['copyVendorJsDev'], () => {
 		}))
 		.pipe(inject(
 			gulp.src([
-			  '!dev/js/vendor/background.js',
-        '!dev/js/vendor/contentscript.js',
+				'!dev/js/vendor/background.js',
+				'!dev/js/vendor/contentscript.js',
 				'dev/js/vendor/jquery.js',
 				'dev/js/vendor/*.js'
 			], {
@@ -287,7 +334,7 @@ gulp.task('copyFontsDev', () => {
 gulp.task('copyDataDev', () => {
 	return gulp.src([
 		'src/data/**/*',
-    'src/manifest.json'
+		'src/manifest.json'
 	], {base: './src/'})
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(gulp.dest('dev/'))
@@ -363,12 +410,14 @@ gulp.task('scriptsDev', () => {
 	])
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(sourcemaps.init())
-		.pipe(babel())
+		.pipe(babel({
+			presets: ['es2015']
+		}))
 		.pipe(concat('main.js')) /*build single file*/
 		.pipe(uglify({
 			mangle: false,
 			compress: false,
-			output: { beautify: true }
+			output: {beautify: true}
 		}))
 		.pipe(sourcemaps.write())
 		.pipe(size({
@@ -393,7 +442,8 @@ gulp.task('dev', ['clean'], (cb) => {
 			'scriptsDev',
 			'copyFontsDev',
 			'htmlDev',
-			'copyVendorJsDev'
+			'copyVendorJsDev',
+			'copyNotCompileJsDev'
 		],
 		'imagesDev', /*images optimization can be with delay, must wait*/
 		cb
