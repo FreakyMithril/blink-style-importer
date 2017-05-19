@@ -8,12 +8,14 @@ First version will not save data after page reload.
 * Check on Brackets
 
 #####Extension app screen
-![Extension app screen](img/screenshots/appscreen-one.jpg)
+![Extension app screen](img/screenshots/screen-one.jpg)
+#####Autocomplete Work
+![Autocomplete screen](img/screenshots/screen-autocomplete.jpg)
 #####Lint Work
-![Linting screen](img/screenshots/lint-error.jpg)
+![Linting screen](img/screenshots/screen-lint.jpg)
 #####Logs Screen
-![Log screen](img/screenshots/log.jpg)
+![Log screen](img/screenshots/screen-log.jpg)
 #####Load exist styles
-![Load exist styles screen](img/screenshots/exist-styles.jpg)
+![Load exist styles screen](img/screenshots/screen-current-styles.jpg)
 #####Side menu
-![Side menu screen](img/screenshots/exist-styles.jpg)
+![Side menu screen](img/screenshots/screen-menu.jpg)
