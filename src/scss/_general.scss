@@ -1,5 +1,5 @@
 body, html {
-    font-family: Helvetica, Ubuntu, Arial, sans-serif;
+    font-family: Helvetica, Ubuntu, 'Segoe UI', Arial, sans-serif;
     height: 100%;
 }
 //end for fixed height bottom footer
@@ -12,22 +12,6 @@ a {
     }
 }
 //end off bootstrap outline links in firefox
-
-//start no browser support
-.chromeframe {
-    font-size: 30px;
-    position: fixed;
-    z-index: 99999;
-    top: 0;
-    right: 0;
-    left: 0;
-    text-align: center;
-    background: #fff;
-    a {
-        color: red;
-    }
-}
-//end no browser support
 
 body {
     min-width: 500px;

@@ -2,26 +2,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <!--[if IE]>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <![endif]-->
     <title>{{ title }}</title>
-    <!-- <link href='img/apple-touch-icon-precomposed.png' rel='apple-touch-icon-precomposed' sizes='192x192'> -->
-    <!-- <link href='img/favicon.ico' rel='shortcut icon' type='image/x-icon'> -->
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#3f51b5">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
     <link rel="stylesheet" href="css/main.css">
-    <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body>
-<!--[if lt IE 9]>
-<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="//browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-<![endif]-->
 <div class="mdl-layout__container"><!-- start #wrap -->
     <div class="mdl-layout mdl-js-layout {{ wrapClass }}">
         {% block content %}{% endblock %}
