@@ -254,7 +254,6 @@ gulp.task('copyVendorJsDev', () => {
 		.pipe(babel({
 			presets: ['es2015']
 		}))
-		.pipe(uglify())
 		.pipe(sourcemaps.write())
 
 		.pipe(changed('dev/js/vendor'))
