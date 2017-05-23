@@ -3,33 +3,40 @@ function notifyMessage(word) {
 	console.info('Blink extension says: ' + word);
 }
 
-function saveToStorage(styles, url) {
-	return false;
-	chrome.storage.sync.get(function (items) {
-		if (Object.keys(items).length > 0 && items.data) {
-			notifyMessage('Find data, adding new');
-			items.data.push({pageUrl: url, blinkStyle: styles});
+let Storage = {
+	saveIn: (styles, url) => {
+		return false;
+		chrome.storage.sync.get(function (items) {
+			if (Object.keys(items).length > 0 && items.data) {
+				notifyMessage('Find data, adding new');
+				items.data.push({pageUrl: url, blinkStyle: styles});
 
-			chrome.storage.sync.set(items, function () {
-				notifyMessage('Data successfully saved to the storage!');
-			});
-		} else {
-			notifyMessage('No Data, create new');
-			items.data = [{pageUrl: url, blinkStyle: styles}];
+				chrome.storage.sync.set(items, function () {
+					notifyMessage('Data successfully saved to the storage!');
+				});
+			} else {
+				notifyMessage('No Data, create new');
+				items.data = [{pageUrl: url, blinkStyle: styles}];
 
-			chrome.storage.sync.set(items, function () {
-				notifyMessage('Data successfully saved to the storage!');
-			});
-		}
-	});
-}
-
-function readFromStorage() {
-	return false;
-	chrome.storage.sync.get(null, function (obj) {
-		console.log(obj);
-	});
-}
+				chrome.storage.sync.set(items, function () {
+					notifyMessage('Data successfully saved to the storage!');
+				});
+			}
+		});
+	},
+	readFrom: () => {
+		return false;
+		notifyMessage('Storage data:');
+		chrome.storage.sync.get(null, function (obj) {
+			console.log(obj);
+		});
+	},
+	clearIt: () => {
+		return false;
+		chrome.storage.sync.clear();
+		notifyMessage('Storage cleared!');
+	}
+};
 
 function removeStylesOnPage() {
 	let blinkStyles = document.getElementById('blinkStyles');
@@ -76,25 +83,25 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 	if (request.greeting === "sendData") {
 		if (addStylesOnPage()) {
-			saveToStorage(data, dataUrl);
+			Storage.saveIn(data, dataUrl);
 			sendResponse({currentData: data, success: true});
 		} else {
 			sendResponse({success: false});
 		}
 	} else if (request.greeting === "removeData") {
 		if (removeStylesOnPage()) {
-			chrome.storage.sync.clear();
+			Storage.clearIt();
 			sendResponse({success: true});
 		} else {
-			chrome.storage.sync.clear();
+			Storage.clearIt();
 			sendResponse({success: false});
 		}
 	} else if (request.greeting === "loadData") {
 		if (currentStylesOnPage()) {
-			readFromStorage();
+			Storage.readFrom();
 			sendResponse({currentData: currentStylesOnPage(), success: true});
 		} else {
-			readFromStorage();
+			Storage.readFrom();
 			sendResponse({success: false});
 		}
 	}
