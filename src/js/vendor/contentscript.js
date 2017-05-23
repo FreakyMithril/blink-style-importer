@@ -1,9 +1,9 @@
-function notifyMessage(word) {
+const notifyMessage = (word) => {
 	return false;
 	console.info('Blink extension says: ' + word);
-}
+};
 
-let Storage = {
+const Storage = {
 	saveIn: (styles, url) => {
 		return false;
 		chrome.storage.sync.get(function (items) {
@@ -38,39 +38,10 @@ let Storage = {
 	}
 };
 
-function removeStylesOnPage() {
-	let blinkStyles = document.getElementById('blinkStyles');
+const StyleOnPage = {
+	addThem: (data) => {
+		StyleOnPage.removeThem();
 
-	if (blinkStyles === null) {
-		notifyMessage('Blink style Not exist');
-		return false;
-	} else {
-		notifyMessage('Blink style Exist');
-		document.getElementsByTagName('body')[0].removeChild(blinkStyles);
-		notifyMessage('Styles Removed');
-		return true;
-	}
-}
-
-function currentStylesOnPage() {
-	let blinkStyles = document.getElementById('blinkStyles');
-
-	if (blinkStyles === null) {
-		notifyMessage('Blink style Not exist, cant load');
-		return false;
-	} else {
-		notifyMessage('Blink style Exist, try to load');
-		return blinkStyles.innerHTML;
-	}
-}
-
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-	notifyMessage("Something happening from the extension");
-	let dataUrl = request.dataUrl || {};
-	let data = request.data || {};
-
-	function addStylesOnPage() {
-		removeStylesOnPage();
 		let styles = document.createElement('style');
 		styles.type = 'text/css';
 		styles.id = 'blinkStyles';
@@ -78,18 +49,48 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 		document.getElementsByTagName('body')[0].appendChild(styles);
 		notifyMessage('Styles Added');
 		return true;
-	}
+	},
+	removeThem: () => {
+		let blinkStyles = document.getElementById('blinkStyles');
 
+		if (blinkStyles === null) {
+			notifyMessage('Blink style Not exist');
+			return false;
+		} else {
+			notifyMessage('Blink style Exist');
+			document.getElementsByTagName('body')[0].removeChild(blinkStyles);
+			notifyMessage('Styles Removed');
+			return true;
+		}
+	},
+	checkForExist: () => {
+		let blinkStyles = document.getElementById('blinkStyles');
+
+		if (blinkStyles === null) {
+			notifyMessage('Blink style Not exist, cant load');
+			return false;
+		} else {
+			notifyMessage('Blink style Exist, try to load');
+			return blinkStyles.innerHTML;
+		}
+	}
+};
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+	notifyMessage("Something happening from the extension");
+
+	let dataUrl = request.dataUrl || {};
+	let data = request.data || {};
 
 	if (request.greeting === "sendData") {
-		if (addStylesOnPage()) {
+		if (StyleOnPage.addThem(data)) {
 			Storage.saveIn(data, dataUrl);
 			sendResponse({currentData: data, success: true});
 		} else {
 			sendResponse({success: false});
 		}
 	} else if (request.greeting === "removeData") {
-		if (removeStylesOnPage()) {
+		if (StyleOnPage.removeThem()) {
 			Storage.clearIt();
 			sendResponse({success: true});
 		} else {
@@ -97,9 +98,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 			sendResponse({success: false});
 		}
 	} else if (request.greeting === "loadData") {
-		if (currentStylesOnPage()) {
+		if (StyleOnPage.checkForExist()) {
 			Storage.readFrom();
-			sendResponse({currentData: currentStylesOnPage(), success: true});
+			sendResponse({currentData: StyleOnPage.checkForExist(), success: true});
 		} else {
 			Storage.readFrom();
 			sendResponse({success: false});

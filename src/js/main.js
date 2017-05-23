@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+const ready = () => {
 	const submitStyles = document.getElementById('submitStyles');
 	const clearStyles = document.getElementById('clearStyles');
 	const loadStyles = document.getElementById('loadStyles');
@@ -22,16 +22,16 @@ document.addEventListener('DOMContentLoaded', function () {
 		matchBrackets: true
 	});
 
-	function notifyMessage(word) {
+	const notifyMessage = (word) => {
 		textAreaLog.innerHTML += "<tr><td class='mdl-data-table__cell--non-numeric'>" + word + "</td></tr>";
 		let data = {
 			message: 'Log: ' + word,
 			timeout: 1000
 		};
 		snackbarContainer.MaterialSnackbar.showSnackbar(data);
-	}
+	};
 
-	function extractHostname(url) {
+	const extractHostname = (url) => {
 		let hostname;
 		if (url.indexOf("://") > -1) {
 			hostname = url.split('/')[2];
@@ -41,9 +41,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 		hostname = hostname.split(':')[0];
 		return hostname;
-	}
+	};
 
-	let Blink = {
+	const Blink = {
 		sendToPage: () => {
 			myCodeMirror.save();
 
@@ -128,4 +128,5 @@ document.addEventListener('DOMContentLoaded', function () {
 		notifyMessage('Sending submit for load Styles');
 		Blink.loadFromPage();
 	});
-});
+};
+document.addEventListener("DOMContentLoaded", ready);
