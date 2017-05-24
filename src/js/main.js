@@ -1,11 +1,11 @@
-const ready = () => {
-	const submitStyles = document.getElementById('submitStyles');
-	const clearStyles = document.getElementById('clearStyles');
-	const loadStyles = document.getElementById('loadStyles');
-	const textAreaLog = document.getElementById('customCsslog');
-	const currentCssArea = document.getElementById('currentCss');
-	const labelForNewCss = document.getElementById('cssStylesLabel');
-	const snackbarContainer = document.getElementById('toastLog');
+const READY = () => {
+	let submitStyles = document.getElementById('submitStyles');
+	let clearStyles = document.getElementById('clearStyles');
+	let loadStyles = document.getElementById('loadStyles');
+	let textAreaLog = document.getElementById('customCsslog');
+	let currentCssArea = document.getElementById('currentCss');
+	let labelForNewCss = document.getElementById('cssStylesLabel');
+	let snackbarContainer = document.getElementById('toastLog');
 	let textAreaHtml = document.getElementById('cssStylesArea');
 
 	let myCodeMirror = CodeMirror.fromTextArea(textAreaHtml, {
@@ -22,7 +22,7 @@ const ready = () => {
 		matchBrackets: true
 	});
 
-	const notifyMessage = (word) => {
+	let notifyMessage = word => {
 		textAreaLog.innerHTML += "<tr><td class='mdl-data-table__cell--non-numeric'>" + word + "</td></tr>";
 		let data = {
 			message: 'Log: ' + word,
@@ -31,7 +31,7 @@ const ready = () => {
 		snackbarContainer.MaterialSnackbar.showSnackbar(data);
 	};
 
-	const extractHostname = (url) => {
+	let extractHostname = url => {
 		let hostname;
 		if (url.indexOf("://") > -1) {
 			hostname = url.split('/')[2];
@@ -43,7 +43,7 @@ const ready = () => {
 		return hostname;
 	};
 
-	const Blink = {
+	let Blink = {
 		sendToPage: () => {
 			myCodeMirror.save();
 
@@ -54,13 +54,13 @@ const ready = () => {
 				labelForNewCss.innerHTML = 'Invalid text provided';
 				notifyMessage('Please put styles');
 			} else {
-				chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+				chrome.tabs.query({active: true, currentWindow: true}, tabs => {
 					let elementUrl = extractHostname(tabs[0].url);
 					chrome.tabs.sendMessage(tabs[0].id, {
 						greeting: "sendData",
 						data: stylesData,
 						dataUrl: elementUrl
-					}, function (response) {
+					}, response => {
 						labelForNewCss.innerHTML = 'Changed data in page';
 						notifyMessage('Send data to extension');
 						if (response.success === true) {
@@ -78,8 +78,8 @@ const ready = () => {
 
 			labelForNewCss.innerHTML = 'Send submit for clearing form';
 
-			chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-				chrome.tabs.sendMessage(tabs[0].id, {greeting: "removeData"}, function (response) {
+			chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+				chrome.tabs.sendMessage(tabs[0].id, {greeting: "removeData"}, response => {
 					labelForNewCss.innerHTML = 'Submit new Blink styles on page';
 					notifyMessage('Send data to extension');
 					if (response.success === true) {
@@ -96,8 +96,8 @@ const ready = () => {
 
 			labelForNewCss.innerHTML = 'Sending submit for load Styles';
 
-			chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-				chrome.tabs.sendMessage(tabs[0].id, {greeting: "loadData"}, function (response) {
+			chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+				chrome.tabs.sendMessage(tabs[0].id, {greeting: "loadData"}, response => {
 					labelForNewCss.innerHTML = 'Submit new Blink styles on page';
 					notifyMessage('Send data to extension');
 					if (response.success === true) {
@@ -111,22 +111,22 @@ const ready = () => {
 		}
 	};
 
-	submitStyles.addEventListener('click', function (event) {
+	submitStyles.addEventListener('click', event => {
 		event.preventDefault();
 		notifyMessage('Sending form Submission');
 		Blink.sendToPage();
 	});
 
-	clearStyles.addEventListener('click', function (event) {
+	clearStyles.addEventListener('click', event => {
 		event.preventDefault();
 		notifyMessage('Sending submit for clear form');
 		Blink.clearOnPage();
 	});
 
-	loadStyles.addEventListener('click', function (event) {
+	loadStyles.addEventListener('click', event => {
 		event.preventDefault();
 		notifyMessage('Sending submit for load Styles');
 		Blink.loadFromPage();
 	});
 };
-document.addEventListener("DOMContentLoaded", ready);
+document.addEventListener("DOMContentLoaded", READY);

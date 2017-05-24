@@ -1,12 +1,12 @@
-const notifyMessage = (word) => {
+let notifyMessage = (word) => {
 	return false;
 	console.info('Blink extension says: ' + word);
 };
 
-const Storage = {
+let Storage = {
 	saveIn: (styles, url) => {
 		return false;
-		chrome.storage.sync.get(function (items) {
+		chrome.storage.sync.get(items => {
 			if (Object.keys(items).length > 0 && items.data) {
 				notifyMessage('Find data, adding new');
 				items.data.push({pageUrl: url, blinkStyle: styles});
@@ -27,7 +27,7 @@ const Storage = {
 	readFrom: () => {
 		return false;
 		notifyMessage('Storage data:');
-		chrome.storage.sync.get(null, function (obj) {
+		chrome.storage.sync.get(null, obj => {
 			console.log(obj);
 		});
 	},
@@ -38,7 +38,7 @@ const Storage = {
 	}
 };
 
-const StyleOnPage = {
+let StyleOnPage = {
 	addThem: (data) => {
 		StyleOnPage.removeThem();
 
@@ -76,7 +76,7 @@ const StyleOnPage = {
 	}
 };
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	notifyMessage("Something happening from the extension");
 
 	let dataUrl = request.dataUrl || {};
