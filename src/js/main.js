@@ -104,7 +104,7 @@ const READY = () => {
 						currentCssArea.value = response.currentData;
 						notifyMessage('Loaded current styles');
 					} else {
-						notifyMessage('Something wrong');
+						notifyMessage('No Styles yet');
 					}
 				});
 			});
@@ -127,6 +127,10 @@ const READY = () => {
 		event.preventDefault();
 		notifyMessage('Sending submit for load Styles');
 		Blink.loadFromPage();
+	});
+	
+	chrome.tabs.executeScript(null, {
+		code: Blink.loadFromPage()
 	});
 };
 document.addEventListener("DOMContentLoaded", READY);
