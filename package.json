@@ -1,6 +1,6 @@
 {
   "name": "blink-style-importer",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Chrome browser extension for import css styles on any page",
   "main": "index.js",
   "license": "MIT",
