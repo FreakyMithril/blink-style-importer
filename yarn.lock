@@ -1243,6 +1243,12 @@ decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
 
+decomment@^0.8.7:
+  version "0.8.7"
+  resolved "https://registry.yarnpkg.com/decomment/-/decomment-0.8.7.tgz#248f2116f6ce3a8e8dd1b63e5b35aba5ca054ca5"
+  dependencies:
+    esprima "3.1"
+
 decompress-tar@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/decompress-tar/-/decompress-tar-3.1.0.tgz#217c789f9b94450efaadc5c5e537978fc333c466"
@@ -1521,6 +1527,10 @@ escape-html@~1.0.3:
 escape-string-regexp@^1.0.0, escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
+
+esprima@3.1:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/esprima/-/esprima-3.1.3.tgz#fdca51cee6133895e3c88d535ce49dbff62a4633"
 
 esprima@^2.6.0:
   version "2.7.3"
@@ -2248,6 +2258,14 @@ gulp-sourcemaps@^2.6.0:
     strip-bom-string "1.X"
     through2 "2.X"
     vinyl "1.X"
+
+gulp-strip-comments@^2.4.5:
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/gulp-strip-comments/-/gulp-strip-comments-2.4.5.tgz#76a5587078e6a03332925a452d2b744c1bb6cda5"
+  dependencies:
+    decomment "^0.8.7"
+    gulp-util "^3.0.8"
+    through2 "^2.0.1"
 
 gulp-uglify@^2.1.2:
   version "2.1.2"
