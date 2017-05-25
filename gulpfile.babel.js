@@ -18,6 +18,8 @@ import notify from "gulp-notify";
 import plumber from 'gulp-plumber';
 import sass from 'gulp-sass';
 import size from 'gulp-size';
+import strip  from 'gulp-strip-comments';
+
 import sourcemaps from 'gulp-sourcemaps';
 import uglify from 'gulp-uglify';
 
@@ -89,6 +91,7 @@ gulp.task('html', ['copyVendorJs'], () => {
 					return '<script src="' + filePath.replace('dist/', '') + '"></script>';
 				}
 			}))
+		.pipe(strip())
 		.pipe(gulp.dest('dist'))
 		.pipe(notify({
 			"title": "Html",
@@ -305,6 +308,7 @@ gulp.task('htmlDev', ['copyVendorJsDev'], () => {
 					return '<script src="' + filePath.replace('dev/', '') + '"></script>';
 				}
 			}))
+		.pipe(strip())
 		.pipe(gulp.dest('dev'))
 		.pipe(notify({
 			"title": "Html",
