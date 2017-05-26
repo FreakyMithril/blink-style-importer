@@ -14,6 +14,21 @@ let Storage = {
 				chrome.storage.sync.set(items, function () {
 					notifyMessage('Data successfully saved to the storage!');
 				});
+				//console.log(JSON.stringify(items.data));
+				//console.log(items.data);
+				// for (let item = 0; item < items.data.length; item++) {
+				// 	console.log(items.data[item].pageUrl);
+				// 	if(items.data[item].pageUrl===url){
+				// 		notifyMessage('Site exist');
+				// 		break
+				// 	} else {
+				// 		items.data.push({pageUrl: url, blinkStyle: styles});
+				//
+				// 		chrome.storage.sync.set(items, function () {
+				// 			notifyMessage('Data successfully saved to the storage!');
+				// 		});
+				// 	}
+				// }
 			} else {
 				notifyMessage('No Data, create new');
 				items.data = [{pageUrl: url, blinkStyle: styles}];
