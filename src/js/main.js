@@ -101,7 +101,8 @@ const READY = () => {
 					labelForNewCss.innerHTML = 'Submit new Blink styles on page';
 					notifyMessage('Send data to extension');
 					if (response.success === true) {
-						currentCssArea.value = response.currentData;
+						currentCssArea.value = response.currentData; //save to page editor
+						myCodeMirror.setValue(response.currentData); //save to blink editor
 						notifyMessage('Loaded current styles');
 					} else {
 						notifyMessage('No Styles yet');
