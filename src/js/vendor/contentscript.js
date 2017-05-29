@@ -3,32 +3,29 @@ let notifyMessage = (word) => {
 	console.info('Blink extension says: ' + word);
 };
 
+let checkForExistSite = (items, url) => {
+	for (let item = 0; item < items.data.length; item++) {
+		if(items.data[item].pageUrl === url){
+			notifyMessage('Site ' + items.data[item].pageUrl + ' exist');
+			return true;
+		}
+	}
+};
+
 let Storage = {
 	saveIn: (styles, url) => {
 		return false;
 		chrome.storage.sync.get(items => {
 			if (Object.keys(items).length > 0 && items.data) {
-				notifyMessage('Find data, adding new');
-				items.data.push({pageUrl: url, blinkStyle: styles});
+				notifyMessage('Find some data, try adding new');
+				if(!checkForExistSite(items, url)) {
+					items.data.push({pageUrl: url, blinkStyle: styles});
 
-				chrome.storage.sync.set(items, function () {
-					notifyMessage('Data successfully saved to the storage!');
-				});
-				//console.log(JSON.stringify(items.data));
-				//console.log(items.data);
-				// for (let item = 0; item < items.data.length; item++) {
-				// 	console.log(items.data[item].pageUrl);
-				// 	if(items.data[item].pageUrl===url){
-				// 		notifyMessage('Site exist');
-				// 		break
-				// 	} else {
-				// 		items.data.push({pageUrl: url, blinkStyle: styles});
-				//
-				// 		chrome.storage.sync.set(items, function () {
-				// 			notifyMessage('Data successfully saved to the storage!');
-				// 		});
-				// 	}
-				// }
+					chrome.storage.sync.set(items, function () {
+						notifyMessage('Data successfully saved to the storage!');
+					});
+				}
+
 			} else {
 				notifyMessage('No Data, create new');
 				items.data = [{pageUrl: url, blinkStyle: styles}];
@@ -41,8 +38,8 @@ let Storage = {
 	},
 	readFrom: () => {
 		return false;
-		notifyMessage('Storage data:');
 		chrome.storage.sync.get(null, obj => {
+			notifyMessage('Storage data:');
 			console.log(obj);
 		});
 	},
