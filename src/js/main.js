@@ -97,7 +97,11 @@ const READY = () => {
 			labelForNewCss.innerHTML = 'Sending submit for load Styles';
 
 			chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-				chrome.tabs.sendMessage(tabs[0].id, {greeting: "loadData"}, response => {
+				let elementUrl = extractHostname(tabs[0].url);
+				chrome.tabs.sendMessage(tabs[0].id, {
+					greeting: "loadData",
+					dataUrl: elementUrl
+				}, response => {
 					labelForNewCss.innerHTML = 'Submit new Blink styles on page';
 					notifyMessage('Send data to extension');
 					if (response.success === true) {
