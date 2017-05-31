@@ -5,7 +5,7 @@ let notifyMessage = (word) => {
 
 let checkForExistSite = (items, url) => {
 	for (let item = 0; item < items.data.length; item++) {
-		if(items.data[item].pageUrl === url){
+		if (items.data[item].pageUrl === url) {
 			notifyMessage('Site ' + items.data[item].pageUrl + ' exist');
 			return true;
 		}
@@ -18,7 +18,7 @@ let Storage = {
 		chrome.storage.sync.get(items => {
 			if (Object.keys(items).length > 0 && items.data) {
 				notifyMessage('Find some data, try adding new');
-				if(!checkForExistSite(items, url)) {
+				if (!checkForExistSite(items, url)) {
 					items.data.push({pageUrl: url, blinkStyle: styles});
 
 					chrome.storage.sync.set(items, function () {
@@ -26,7 +26,8 @@ let Storage = {
 					});
 				}
 
-			} else {
+			}
+			else {
 				notifyMessage('No Data, create new');
 				items.data = [{pageUrl: url, blinkStyle: styles}];
 
@@ -43,7 +44,7 @@ let Storage = {
 			console.log(obj);
 		});
 	},
-	clearIt: () => {
+	clearAll: () => {
 		return false;
 		chrome.storage.sync.clear();
 		notifyMessage('Storage cleared!');
@@ -68,7 +69,8 @@ let StyleOnPage = {
 		if (blinkStyles === null) {
 			notifyMessage('Blink style Not exist');
 			return false;
-		} else {
+		}
+		else {
 			notifyMessage('Blink style Exist');
 			document.getElementsByTagName('body')[0].removeChild(blinkStyles);
 			notifyMessage('Styles Removed');
@@ -81,7 +83,8 @@ let StyleOnPage = {
 		if (blinkStyles === null) {
 			notifyMessage('Blink style Not exist, cant load');
 			return false;
-		} else {
+		}
+		else {
 			notifyMessage('Blink style Exist, try to load');
 			return blinkStyles.innerHTML;
 		}
@@ -98,22 +101,27 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		if (StyleOnPage.addThem(data)) {
 			Storage.saveIn(data, dataUrl);
 			sendResponse({currentData: data, success: true});
-		} else {
+		}
+		else {
 			sendResponse({success: false});
 		}
-	} else if (request.greeting === "removeData") {
+	}
+	else if (request.greeting === "removeData") {
 		if (StyleOnPage.removeThem()) {
-			Storage.clearIt();
+			Storage.clearAll();
 			sendResponse({success: true});
-		} else {
-			Storage.clearIt();
+		}
+		else {
+			Storage.clearAll();
 			sendResponse({success: false});
 		}
-	} else if (request.greeting === "loadData") {
+	}
+	else if (request.greeting === "loadData") {
 		if (StyleOnPage.checkForExist()) {
 			Storage.readFrom();
 			sendResponse({currentData: StyleOnPage.checkForExist(), success: true});
-		} else {
+		}
+		else {
 			Storage.readFrom();
 			sendResponse({success: false});
 		}
