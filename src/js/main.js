@@ -53,20 +53,22 @@ const READY = () => {
 			if (!stylesData) {
 				labelForNewCss.innerHTML = 'Invalid text provided';
 				notifyMessage('Please put styles');
-			} else {
+			}
+			else {
 				chrome.tabs.query({active: true, currentWindow: true}, tabs => {
 					let elementUrl = extractHostname(tabs[0].url);
 					chrome.tabs.sendMessage(tabs[0].id, {
 						greeting: "sendData",
 						data: stylesData,
-						dataUrl: elementUrl
+						url: elementUrl
 					}, response => {
 						labelForNewCss.innerHTML = 'Changed data in page';
 						notifyMessage('Send data to extension');
 						if (response.success === true) {
 							currentCssArea.value = response.currentData;
 							notifyMessage('Show current styles');
-						} else {
+						}
+						else {
 							notifyMessage('Something wrong');
 						}
 					});
@@ -79,13 +81,18 @@ const READY = () => {
 			labelForNewCss.innerHTML = 'Send submit for clearing form';
 
 			chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-				chrome.tabs.sendMessage(tabs[0].id, {greeting: "removeData"}, response => {
+				let elementUrl = extractHostname(tabs[0].url);
+				chrome.tabs.sendMessage(tabs[0].id, {
+					greeting: "removeData",
+					pageUrl: elementUrl
+				}, response => {
 					labelForNewCss.innerHTML = 'Submit new Blink styles on page';
 					notifyMessage('Send data to extension');
 					if (response.success === true) {
 						currentCssArea.value = '';
 						notifyMessage('Removed current styles');
-					} else {
+					}
+					else {
 						notifyMessage('Something wrong');
 					}
 				});
@@ -100,7 +107,7 @@ const READY = () => {
 				let elementUrl = extractHostname(tabs[0].url);
 				chrome.tabs.sendMessage(tabs[0].id, {
 					greeting: "loadData",
-					dataUrl: elementUrl
+					pageUrl: elementUrl
 				}, response => {
 					labelForNewCss.innerHTML = 'Submit new Blink styles on page';
 					notifyMessage('Send data to extension');
@@ -108,7 +115,8 @@ const READY = () => {
 						currentCssArea.value = response.currentData; //save to page editor
 						myCodeMirror.setValue(response.currentData); //save to blink editor
 						notifyMessage('Loaded current styles');
-					} else {
+					}
+					else {
 						notifyMessage('No Styles yet');
 					}
 				});
@@ -133,7 +141,7 @@ const READY = () => {
 		notifyMessage('Sending submit for load Styles');
 		Blink.loadFromPage();
 	});
-	
+
 	chrome.tabs.executeScript(null, {
 		code: Blink.loadFromPage()
 	});

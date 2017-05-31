@@ -1,15 +1,22 @@
 let notifyMessage = (word) => {
 	return false;
-	console.info('Blink extension says: ' + word);
+	console.log('Blink extension says: ', word);
 };
 
 let checkForExistSite = (items, url) => {
-	for (let item = 0; item < items.data.length; item++) {
-		if (items.data[item].pageUrl === url) {
-			notifyMessage('Site ' + items.data[item].pageUrl + ' exist');
-			return true;
+	let exist = false;
+	if (Object.keys(items).length > 0 && items.data) {
+		for (let item = 0; item < items.data.length; item++) {
+			if (items.data[item].pageUrl === url) {
+				notifyMessage('Site ' + items.data[item].pageUrl + ' in Storage exist');
+				exist = items.data[item];
+			}
 		}
 	}
+	else {
+		notifyMessage('No Data in Storage');
+	}
+	return exist;
 };
 
 let Storage = {
@@ -17,32 +24,39 @@ let Storage = {
 		return false;
 		chrome.storage.sync.get(items => {
 			if (Object.keys(items).length > 0 && items.data) {
-				notifyMessage('Find some data, try adding new');
+				notifyMessage('Find some data in Storage, try adding new');
 				if (!checkForExistSite(items, url)) {
 					items.data.push({pageUrl: url, blinkStyle: styles});
 
 					chrome.storage.sync.set(items, function () {
-						notifyMessage('Data successfully saved to the storage!');
+						notifyMessage('New Data successfully saved to the storage!');
 					});
 				}
 
 			}
 			else {
-				notifyMessage('No Data, create new');
+				notifyMessage('No Data in Storage, create new');
 				items.data = [{pageUrl: url, blinkStyle: styles}];
 
 				chrome.storage.sync.set(items, function () {
-					notifyMessage('Data successfully saved to the storage!');
+					notifyMessage('First Data successfully added to the Storage!');
 				});
 			}
 		});
 	},
-	readFrom: () => {
+	readFrom: (searchWord) => {
 		return false;
-		chrome.storage.sync.get(null, obj => {
-			notifyMessage('Storage data:');
-			console.log(obj);
-		});
+		if (!searchWord) {
+			chrome.storage.sync.get(null, obj => {
+				notifyMessage('All Storage data:');
+				notifyMessage(obj);
+			});
+		}
+		else {
+			chrome.storage.sync.get(null, obj => {
+				notifyMessage('Searched Storage site styles:' + checkForExistSite(obj, searchWord).blinkStyle);
+			});
+		}
 	},
 	clearAll: () => {
 		return false;
@@ -60,14 +74,14 @@ let StyleOnPage = {
 		styles.id = 'blinkStyles';
 		styles.innerHTML = data;
 		document.getElementsByTagName('body')[0].appendChild(styles);
-		notifyMessage('Styles Added');
+		notifyMessage('Styles on Page Added');
 		return true;
 	},
 	removeThem: () => {
 		let blinkStyles = document.getElementById('blinkStyles');
 
 		if (blinkStyles === null) {
-			notifyMessage('Blink style Not exist');
+			notifyMessage('Blink style in HTML Not exist');
 			return false;
 		}
 		else {
@@ -81,7 +95,7 @@ let StyleOnPage = {
 		let blinkStyles = document.getElementById('blinkStyles');
 
 		if (blinkStyles === null) {
-			notifyMessage('Blink style Not exist, cant load');
+			notifyMessage('Blink style in HTML Not exist, cant load');
 			return false;
 		}
 		else {
@@ -94,7 +108,7 @@ let StyleOnPage = {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	notifyMessage("Something happening from the extension");
 
-	let dataUrl = request.dataUrl || {};
+	let dataUrl = request.pageUrl || {};
 	let data = request.data || {};
 
 	if (request.greeting === "sendData") {
@@ -118,11 +132,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	}
 	else if (request.greeting === "loadData") {
 		if (StyleOnPage.checkForExist()) {
-			Storage.readFrom();
+			Storage.readFrom(dataUrl);
 			sendResponse({currentData: StyleOnPage.checkForExist(), success: true});
 		}
 		else {
-			Storage.readFrom();
+			notifyMessage('No HTML Styles on site, status: success - false');
+			Storage.readFrom(dataUrl);
 			sendResponse({success: false});
 		}
 	}
