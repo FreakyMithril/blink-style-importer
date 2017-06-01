@@ -3,6 +3,15 @@ let notifyMessage = (word) => {
 	console.log('Blink extension says: ', word);
 };
 
+let readDataPromise = () => {
+	return new Promise(function (resolve, reject) {
+		chrome.storage.sync.get(null, function (result) {
+			resolve(result);
+			reject('No Data in Storage');
+		});
+	});
+};
+
 let checkForExistSite = (items, url) => {
 	let exist = false;
 	if (Object.keys(items).length > 0 && items.data) {
@@ -53,9 +62,19 @@ let Storage = {
 			});
 		}
 		else {
-			chrome.storage.sync.get(null, obj => {
-				notifyMessage('Searched Storage site styles:' + checkForExistSite(obj, searchWord).blinkStyle);
-			});
+			readDataPromise()
+				.then(obj => {
+					notifyMessage('Promise Searched Storage site styles:' + checkForExistSite(obj, searchWord).blinkStyle);
+					return checkForExistSite(obj, searchWord).blinkStyle;
+				})
+				.catch(error => {
+					notifyMessage(error);
+					return false;
+				});
+				// .then();
+			// chrome.storage.sync.get(null, obj => {
+			// 	notifyMessage('Searched Storage site styles:' + checkForExistSite(obj, searchWord).blinkStyle);
+			// });
 		}
 	},
 	clearAll: () => {
