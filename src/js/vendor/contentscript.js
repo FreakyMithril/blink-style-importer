@@ -55,29 +55,22 @@ let Storage = {
 	},
 	readFrom: (searchWord) => {
 		//return false;
-		if (!searchWord) {
-			readDataPromise()
-				.then(obj => {
+		readDataPromise()
+			.then(obj => {
+				if (!searchWord) {
 					notifyMessage('Promise - All Storage data:');
 					notifyMessage(obj);
 					return obj;
-				})
-				.catch(error => {
-					notifyMessage(error);
-					return false;
-				});
-		}
-		else {
-			readDataPromise()
-				.then(obj => {
+				}
+				else {
 					notifyMessage('Promise - Searched Storage site styles:' + checkForExistSite(obj, searchWord).blinkStyle);
 					return checkForExistSite(obj, searchWord).blinkStyle;
-				})
-				.catch(error => {
-					notifyMessage(error);
-					return false;
-				});
-		}
+				}
+			})
+			.catch(error => {
+				notifyMessage(error);
+				return false;
+			});
 	},
 	clearAll: () => {
 		//return false;
