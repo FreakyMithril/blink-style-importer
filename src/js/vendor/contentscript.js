@@ -1,5 +1,5 @@
 let notifyMessage = (word) => {
-	return false;
+	//return false;
 	console.log('Blink extension says: ', word);
 };
 
@@ -7,7 +7,7 @@ let readDataPromise = () => {
 	return new Promise(function (resolve, reject) {
 		chrome.storage.sync.get(null, function (result) {
 			resolve(result);
-			reject('No Data in Storage');
+			reject('Promise - No Data in Storage');
 		});
 	});
 };
@@ -30,7 +30,7 @@ let checkForExistSite = (items, url) => {
 
 let Storage = {
 	saveIn: (styles, url) => {
-		return false;
+		//return false;
 		chrome.storage.sync.get(items => {
 			if (Object.keys(items).length > 0 && items.data) {
 				notifyMessage('Find some data in Storage, try adding new');
@@ -54,31 +54,33 @@ let Storage = {
 		});
 	},
 	readFrom: (searchWord) => {
-		return false;
+		//return false;
 		if (!searchWord) {
-			chrome.storage.sync.get(null, obj => {
-				notifyMessage('All Storage data:');
-				notifyMessage(obj);
-			});
+			readDataPromise()
+				.then(obj => {
+					notifyMessage('Promise - All Storage data:');
+					notifyMessage(obj);
+					return obj;
+				})
+				.catch(error => {
+					notifyMessage(error);
+					return false;
+				});
 		}
 		else {
 			readDataPromise()
 				.then(obj => {
-					notifyMessage('Promise Searched Storage site styles:' + checkForExistSite(obj, searchWord).blinkStyle);
+					notifyMessage('Promise - Searched Storage site styles:' + checkForExistSite(obj, searchWord).blinkStyle);
 					return checkForExistSite(obj, searchWord).blinkStyle;
 				})
 				.catch(error => {
 					notifyMessage(error);
 					return false;
 				});
-				// .then();
-			// chrome.storage.sync.get(null, obj => {
-			// 	notifyMessage('Searched Storage site styles:' + checkForExistSite(obj, searchWord).blinkStyle);
-			// });
 		}
 	},
 	clearAll: () => {
-		return false;
+		//return false;
 		chrome.storage.sync.clear();
 		notifyMessage('Storage cleared!');
 	}
@@ -156,7 +158,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		}
 		else {
 			notifyMessage('No HTML Styles on site, status: success - false');
-			Storage.readFrom(dataUrl);
+			Storage.readFrom();
 			sendResponse({success: false});
 		}
 	}
