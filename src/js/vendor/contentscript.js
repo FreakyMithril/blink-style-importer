@@ -35,7 +35,10 @@ let Storage = {
 			if (Object.keys(items).length > 0 && items.data) {
 				notifyMessage('Find some data in Storage, try adding new');
 				if (!checkForExistSite(items, url)) {
-					items.data.push({pageUrl: url, blinkStyle: styles});
+					items.data.push({
+						pageUrl: url,
+						blinkStyle: styles
+					});
 
 					chrome.storage.sync.set(items, function () {
 						notifyMessage('New Data successfully saved to the storage!');
@@ -45,7 +48,10 @@ let Storage = {
 			}
 			else {
 				notifyMessage('No Data in Storage, create new');
-				items.data = [{pageUrl: url, blinkStyle: styles}];
+				items.data = [{
+					pageUrl: url,
+					blinkStyle: styles
+				}];
 
 				chrome.storage.sync.set(items, function () {
 					notifyMessage('First Data successfully added to the Storage!');
