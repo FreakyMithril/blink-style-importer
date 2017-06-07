@@ -177,7 +177,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			sendResponse({
 				currentData: siteStyle,
 				success: true
-			});;
+			});
 		});
 	}
 	else {

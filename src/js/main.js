@@ -3,7 +3,6 @@ const READY = () => {
 	let clearStyles = document.getElementById('clearStyles');
 	let loadStyles = document.getElementById('loadStyles');
 	let textAreaLog = document.getElementById('customCsslog');
-	let currentCssArea = document.getElementById('currentCss');
 	let labelForNewCss = document.getElementById('cssStylesLabel');
 	let snackbarContainer = document.getElementById('toastLog');
 	let textAreaHtml = document.getElementById('cssStylesArea');
@@ -69,7 +68,6 @@ const READY = () => {
 						labelForNewCss.innerHTML = 'Changed data in page';
 						notifyMessage('Send data to extension');
 						if (response.success === true) {
-							currentCssArea.value = response.currentData;
 							notifyMessage('Show current styles');
 						}
 						else {
@@ -93,7 +91,6 @@ const READY = () => {
 					labelForNewCss.innerHTML = 'Submit new Blink styles on page';
 					notifyMessage('Send data to extension');
 					if (response.success === true) {
-						currentCssArea.value = '';
 						notifyMessage('Removed current styles');
 					}
 					else {
@@ -116,7 +113,6 @@ const READY = () => {
 					labelForNewCss.innerHTML = 'Submit new Blink styles on page';
 					notifyMessage('Send data to extension');
 					if (response.success === true) {
-						currentCssArea.value = response.currentData; //save to page editor
 						myCodeMirror.setValue(response.currentData); //save to blink editor
 						notifyMessage('Loaded current styles');
 					}
