@@ -8,6 +8,13 @@ const READY = () => {
 	let snackbarContainer = document.getElementById('toastLog');
 	let textAreaHtml = document.getElementById('cssStylesArea');
 
+	let tempData = {};
+
+	let saveTempData = (url, styles) =>{
+		tempData.url = url;
+		tempData.styles = styles;
+	};
+
 	let myCodeMirror = CodeMirror.fromTextArea(textAreaHtml, {
 		lineNumbers: true,
 		showCursorWhenSelecting: false,
@@ -57,11 +64,8 @@ const READY = () => {
 			else {
 				chrome.tabs.query({active: true, currentWindow: true}, tabs => {
 					let elementUrl = extractHostname(tabs[0].url);
-					chrome.tabs.sendMessage(tabs[0].id, {
-						greeting: "sendData",
-						data: stylesData,
-						url: elementUrl
-					}, response => {
+					saveTempData(elementUrl, stylesData);
+					chrome.tabs.sendMessage(tabs[0].id, tempData, response => {
 						labelForNewCss.innerHTML = 'Changed data in page';
 						notifyMessage('Send data to extension');
 						if (response.success === true) {

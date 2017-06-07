@@ -1,4 +1,4 @@
-let notifyMessage = (word) => {
+let notifyMessage = word => {
 	//return false;
 	console.log('Blink extension says: ', word);
 };
@@ -29,57 +29,70 @@ let checkForExistSite = (items, url) => {
 };
 
 let Storage = {
-	saveIn: (styles, url) => {
+	saveIn: (url, styles) => {
+
+		let items = {};
+
+		items[url] = styles;
+
+		chrome.storage.sync.set(items);
+		notifyMessage('Data successfully saved to the storage!');
+
 		//return false;
-		chrome.storage.sync.get(items => {
-			if (Object.keys(items).length > 0 && items.data) {
-				notifyMessage('Find some data in Storage, try adding new');
-				if (!checkForExistSite(items, url)) {
-					items.data.push({
-						pageUrl: url,
-						blinkStyle: styles
-					});
-
-					chrome.storage.sync.set(items, function () {
-						notifyMessage('New Data successfully saved to the storage!');
-					});
-				}
-
-			}
-			else {
-				notifyMessage('No Data in Storage, create new');
-				items.data = [{
-					pageUrl: url,
-					blinkStyle: styles
-				}];
-
-				chrome.storage.sync.set(items, function () {
-					notifyMessage('First Data successfully added to the Storage!');
-				});
-			}
-		});
+		// chrome.storage.sync.get(items => {
+		// 	if (Object.keys(items).length > 0 && items.data) {
+		// 		notifyMessage('Find some data in Storage, try adding new');
+		// 		if (!checkForExistSite(items, url)) {
+		// 			items.data.push({
+		// 				pageUrl: url,
+		// 				blinkStyle: styles
+		// 			});
+		//
+		// 			chrome.storage.sync.set(items, function () {
+		// 				notifyMessage('New Data successfully saved to the storage!');
+		// 			});
+		// 		}
+		//
+		// 	}
+		// 	else {
+		// 		notifyMessage('No Data in Storage, create new');
+		// 		items.data = [{
+		// 			pageUrl: url,
+		// 			blinkStyle: styles
+		// 		}];
+		//
+		// 		chrome.storage.sync.set(items, function () {
+		// 			notifyMessage('First Data successfully added to the Storage!');
+		// 		});
+		// 	}
+		// });
 	},
-	readFrom: (searchWord) => {
+	readFrom: (searchWord, fn) => {
 		//return false;
-		readDataPromise()
-			.then(obj => {
-				if (!searchWord) {
-					notifyMessage('Promise - All Storage data:');
-					notifyMessage(obj);
-					return obj;
-				}
-				else {
-					notifyMessage('Promise - Searched Storage site styles:' + checkForExistSite(obj, searchWord).blinkStyle);
-					return checkForExistSite(obj, searchWord).blinkStyle;
-				}
-			})
-			.catch(error => {
-				notifyMessage(error);
-				return false;
-			});
+		// readDataPromise()
+		// 	.then(obj => {
+		// 		if (!searchWord) {
+		// 			notifyMessage('Promise - All Storage data:');
+		// 			notifyMessage(obj);
+		// 			return obj;
+		// 		}
+		// 		else {
+		// 			notifyMessage('Promise - Searched Storage site styles:' + checkForExistSite(obj, searchWord).blinkStyle);
+		// 			return checkForExistSite(obj, searchWord).blinkStyle;
+		// 		}
+		// 	})
+		// 	.catch(error => {
+		// 		notifyMessage(error);
+		// 		return false;
+		// 	});
+
+		chrome.storage.sync.get(searchWord, function (items) {
+			fn(items[searchWord] || {});
+		});
+		notifyMessage('Data readed from storage');
+
 	},
 	clearAll: () => {
-		//return false;
 		chrome.storage.sync.clear();
 		notifyMessage('Storage cleared!');
 	}
@@ -128,24 +141,10 @@ let StyleOnPage = {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	notifyMessage("Something happening from the extension");
 
-	let dataUrl = request.pageUrl || {};
-	let data = request.data || {};
+	let dataUrl = request.url || {};
+	let data = request.styles || {};
 
-	if (request.greeting === "sendData") {
-		if (StyleOnPage.addThem(data)) {
-			Storage.saveIn(data, dataUrl);
-			sendResponse({
-				currentData: data,
-				success: true
-			});
-		}
-		else {
-			sendResponse({
-				success: false
-			});
-		}
-	}
-	else if (request.greeting === "removeData") {
+	if (request.greeting === "removeData") {
 		if (StyleOnPage.removeThem()) {
 			Storage.clearAll();
 			sendResponse({
@@ -160,19 +159,40 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		}
 	}
 	else if (request.greeting === "loadData") {
-		if (StyleOnPage.checkForExist()) {
-			Storage.readFrom(dataUrl);
+		// if (StyleOnPage.checkForExist()) {
+		// 	Storage.readFrom();
+		// 	sendResponse({
+		// 		currentData: StyleOnPage.checkForExist(),
+		// 		success: true
+		// 	});
+		// }
+		// else {
+		// 	notifyMessage('No HTML Styles on site, status: success - false');
+		// 	Storage.readFrom();
+		// 	sendResponse({
+		// 		success: false
+		// 	});
+		// }
+		Storage.readFrom(request.pageUrl, function (siteStyle) {
 			sendResponse({
-				currentData: StyleOnPage.checkForExist(),
+				currentData: siteStyle,
+				success: true
+			});;
+		});
+	}
+	else {
+		if (StyleOnPage.addThem(data)) {
+			Storage.saveIn(dataUrl, data);
+			sendResponse({
+				currentData: data,
 				success: true
 			});
 		}
 		else {
-			notifyMessage('No HTML Styles on site, status: success - false');
-			Storage.readFrom();
 			sendResponse({
 				success: false
 			});
 		}
 	}
+	return true;
 });
