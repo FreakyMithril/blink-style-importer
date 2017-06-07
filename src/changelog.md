@@ -1,3 +1,7 @@
+#0.1.1
+  * Start rewrite app
+  * Now added Chrome synchronization
+  * Start saving data in storage
 #0.1.0
   * Refactored code
   * When popup opened it try load exist Blink styles from page

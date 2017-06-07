@@ -6,6 +6,7 @@ First version will not save data after page reload.
 * Autocomplete
 * CSS Code Linting
 * Check on Brackets
+* Saving styles in Chrome browser account cloud
 
 #####Extension app screen
 ![Extension app screen](img/screenshots/screen-one.jpg)
