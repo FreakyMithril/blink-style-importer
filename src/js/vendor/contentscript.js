@@ -128,31 +128,45 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	if (request.greeting === "sendData") {
 		if (StyleOnPage.addThem(data)) {
 			Storage.saveIn(data, dataUrl);
-			sendResponse({currentData: data, success: true});
+			sendResponse({
+				currentData: data,
+				success: true
+			});
 		}
 		else {
-			sendResponse({success: false});
+			sendResponse({
+				success: false
+			});
 		}
 	}
 	else if (request.greeting === "removeData") {
 		if (StyleOnPage.removeThem()) {
 			Storage.clearAll();
-			sendResponse({success: true});
+			sendResponse({
+				success: true
+			});
 		}
 		else {
 			Storage.clearAll();
-			sendResponse({success: false});
+			sendResponse({
+				success: false
+			});
 		}
 	}
 	else if (request.greeting === "loadData") {
 		if (StyleOnPage.checkForExist()) {
 			Storage.readFrom(dataUrl);
-			sendResponse({currentData: StyleOnPage.checkForExist(), success: true});
+			sendResponse({
+				currentData: StyleOnPage.checkForExist(),
+				success: true
+			});
 		}
 		else {
 			notifyMessage('No HTML Styles on site, status: success - false');
 			Storage.readFrom();
-			sendResponse({success: false});
+			sendResponse({
+				success: false
+			});
 		}
 	}
 });
