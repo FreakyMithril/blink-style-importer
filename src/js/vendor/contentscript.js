@@ -1,6 +1,6 @@
 let notifyMessage = word => {
 	//return false;
-	console.log('Blink extension says: ', word);
+	console.log('Blink extension content script says: ', word);
 };
 
 let readDataPromise = () => {
@@ -29,6 +29,18 @@ let checkForExistSite = (items, url) => {
 };
 
 let Storage = {
+	checkForExist: (word) => {
+		chrome.storage.sync.get(word, function(obj) {
+			let word = obj.word;
+			console.log(obj);
+			console.log(word);
+			if (obj === null) {
+				console.log('no')
+			} else {
+				console.log('yes')
+			}
+		});
+	},
 	saveIn: (url, styles) => {
 
 		let items = {};
@@ -89,8 +101,14 @@ let Storage = {
 		chrome.storage.sync.get(searchWord, function (items) {
 			fn(items[searchWord] || {});
 		});
-		notifyMessage('Data readed from storage');
+		notifyMessage('Data readed from storage'); /*need make check for exist data in storage*/
 
+	},
+	readAndSaveFrom: (pageUrl) => {
+		Storage.readFrom(pageUrl, function (siteStyle) {
+			StyleOnPage.addThem(siteStyle);
+		});
+		notifyMessage('Data readed from storage and save to page');
 	},
 	clearAll: () => {
 		chrome.storage.sync.clear();
@@ -173,11 +191,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		// 		success: false
 		// 	});
 		// }
+		Storage.checkForExist(request.pageUrl);
 		Storage.readFrom(request.pageUrl, function (siteStyle) {
 			sendResponse({
 				currentData: siteStyle,
-				success: true
+				success: true  /*need make check for exist data in storage*/
 			});
+		});
+	}
+	else if (request.greeting === "loadDataAndSave") {
+		Storage.readAndSaveFrom(request.pageUrl);
+		sendResponse({
+			success: true  /*need make check for exist data in storage*/
 		});
 	}
 	else {
