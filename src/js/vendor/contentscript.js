@@ -3,121 +3,49 @@ let notifyMessage = word => {
 	console.log('Blink extension content script says: ', word);
 };
 
-let readDataPromise = () => {
-	return new Promise(function (resolve, reject) {
-		chrome.storage.sync.get(null, function (result) {
-			resolve(result);
-			reject('Promise - No Data in Storage');
-		});
-	});
-};
 
-let checkForExistSite = (items, url) => {
-	let exist = false;
-	if (Object.keys(items).length > 0 && items.data) {
-		for (let item = 0; item < items.data.length; item++) {
-			if (items.data[item].pageUrl === url) {
-				notifyMessage('Site ' + items.data[item].pageUrl + ' in Storage exist');
-				exist = items.data[item];
-			}
-		}
-	}
-	else {
-		notifyMessage('No Data in Storage');
-	}
-	return exist;
-};
 
 let Storage = {
-	checkForExist: (word) => {
-		chrome.storage.sync.get(word, function(obj) {
-			let word = obj.word;
-			console.log(obj);
-			console.log(word);
-			if (obj === null) {
-				console.log('no')
-			} else {
-				console.log('yes')
+	checkForExistKey: (word) => {
+		chrome.storage.sync.get(word, function (obj) {
+			let exist;
+			if (obj[word] !== undefined) {
+				notifyMessage("There is searched key: '" + word + "' in Storage");
+				exist = true;
+			} else  {
+				notifyMessage("No key in Storage");
+				exist = false;
 			}
+			return exist;
 		});
 	},
 	saveIn: (url, styles) => {
-
 		let items = {};
-
 		items[url] = styles;
-
 		chrome.storage.sync.set(items);
 		notifyMessage('Data successfully saved to the storage!');
-
-		//return false;
-		// chrome.storage.sync.get(items => {
-		// 	if (Object.keys(items).length > 0 && items.data) {
-		// 		notifyMessage('Find some data in Storage, try adding new');
-		// 		if (!checkForExistSite(items, url)) {
-		// 			items.data.push({
-		// 				pageUrl: url,
-		// 				blinkStyle: styles
-		// 			});
-		//
-		// 			chrome.storage.sync.set(items, function () {
-		// 				notifyMessage('New Data successfully saved to the storage!');
-		// 			});
-		// 		}
-		//
-		// 	}
-		// 	else {
-		// 		notifyMessage('No Data in Storage, create new');
-		// 		items.data = [{
-		// 			pageUrl: url,
-		// 			blinkStyle: styles
-		// 		}];
-		//
-		// 		chrome.storage.sync.set(items, function () {
-		// 			notifyMessage('First Data successfully added to the Storage!');
-		// 		});
-		// 	}
-		// });
 	},
 	readFrom: (searchWord, fn) => {
-		//return false;
-		// readDataPromise()
-		// 	.then(obj => {
-		// 		if (!searchWord) {
-		// 			notifyMessage('Promise - All Storage data:');
-		// 			notifyMessage(obj);
-		// 			return obj;
-		// 		}
-		// 		else {
-		// 			notifyMessage('Promise - Searched Storage site styles:' + checkForExistSite(obj, searchWord).blinkStyle);
-		// 			return checkForExistSite(obj, searchWord).blinkStyle;
-		// 		}
-		// 	})
-		// 	.catch(error => {
-		// 		notifyMessage(error);
-		// 		return false;
-		// 	});
-
 		chrome.storage.sync.get(searchWord, function (items) {
 			fn(items[searchWord] || {});
 		});
-		notifyMessage('Data readed from storage'); /*need make check for exist data in storage*/
-
+		notifyMessage('Just readed data from storage'); /*need make check for exist data in storage*/
 	},
 	readAndSaveFrom: (pageUrl) => {
 		Storage.readFrom(pageUrl, function (siteStyle) {
 			StyleOnPage.addThem(siteStyle);
 		});
-		notifyMessage('Data readed from storage and save to page');
+		notifyMessage('Data readed from storage and try to save to page');
 	},
 	clearAll: () => {
 		chrome.storage.sync.clear();
-		notifyMessage('Storage cleared!');
+		notifyMessage('All data in Storage cleared!');
 	}
 };
 
 let StyleOnPage = {
 	addThem: (data) => {
+		notifyMessage("Need check for Exist before add, and remove if Exist");
 		StyleOnPage.removeThem();
 
 		let styles = document.createElement('style');
@@ -191,7 +119,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		// 		success: false
 		// 	});
 		// }
-		Storage.checkForExist(request.pageUrl);
+		if (Storage.checkForExistKey(request.pageUrl)) {
+			console.log ('yes')
+		} else {
+			console.log('no')
+		}
+
 		Storage.readFrom(request.pageUrl, function (siteStyle) {
 			sendResponse({
 				currentData: siteStyle,

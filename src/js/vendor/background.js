@@ -17,7 +17,10 @@ let extractHostname = url => {
 
 let pageLoad = {
 	init: (pageUrl) => {
-		chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+		chrome.tabs.query({
+			active: true,
+			currentWindow: true
+		}, tabs => {
 			chrome.tabs.sendMessage(tabs[0].id, {
 				greeting: "loadDataAndSave",
 				pageUrl: pageUrl
@@ -33,6 +36,7 @@ let pageLoad = {
 		});
 	}
 };
+
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	if (tab.status === 'complete') {
 		let elementUrl = extractHostname(tab.url);
