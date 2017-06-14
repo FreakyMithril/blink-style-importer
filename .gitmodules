@@ -1,4 +1,4 @@
 [submodule "production"]
 	path = production
 	url = git@bitbucket.org:uamithril/blink-style-importer.git
-	branch = develop/production
+	branch = master
