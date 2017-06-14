@@ -1,3 +1,5 @@
+#0.1.6
+  * Publish to store and added git home page
 #0.1.5
   * Added: context menu dropdown in modal
   * Added: action to clear all data from storage
