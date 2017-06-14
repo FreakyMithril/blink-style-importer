@@ -6,19 +6,6 @@ let notifyMessage = word => {
 
 
 let Storage = {
-	checkForExistKey: (word) => {
-		chrome.storage.sync.get(word, function (obj) {
-			let exist;
-			if (obj[word] !== undefined) {
-				notifyMessage("There is searched key: '" + word + "' in Storage");
-				exist = true;
-			} else  {
-				notifyMessage("No key in Storage");
-				exist = false;
-			}
-			return exist;
-		});
-	},
 	saveIn: (url, styles) => {
 		let items = {};
 		items[url] = styles;
@@ -27,15 +14,9 @@ let Storage = {
 	},
 	readFrom: (searchWord, fn) => {
 		chrome.storage.sync.get(searchWord, function (items) {
-			fn(items[searchWord] || {});
+			fn(items[searchWord] || false);
 		});
-		notifyMessage('Just readed data from storage'); /*need make check for exist data in storage*/
-	},
-	readAndSaveFrom: (pageUrl) => {
-		Storage.readFrom(pageUrl, function (siteStyle) {
-			StyleOnPage.addThem(siteStyle);
-		});
-		notifyMessage('Data readed from storage and try to save to page');
+		notifyMessage('Just readed data from storage'); /*need make check for exist data in storage when use function*/
 	},
 	clearAll: () => {
 		chrome.storage.sync.clear();
@@ -45,7 +26,7 @@ let Storage = {
 
 let StyleOnPage = {
 	addThem: (data) => {
-		notifyMessage("Need check for Exist before add, and remove if Exist");
+		notifyMessage("Need check for Exist in HTML before add, and remove if Exist");
 		StyleOnPage.removeThem();
 
 		let styles = document.createElement('style');
@@ -105,37 +86,35 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		}
 	}
 	else if (request.greeting === "loadData") {
-		// if (StyleOnPage.checkForExist()) {
-		// 	Storage.readFrom();
-		// 	sendResponse({
-		// 		currentData: StyleOnPage.checkForExist(),
-		// 		success: true
-		// 	});
-		// }
-		// else {
-		// 	notifyMessage('No HTML Styles on site, status: success - false');
-		// 	Storage.readFrom();
-		// 	sendResponse({
-		// 		success: false
-		// 	});
-		// }
-		if (Storage.checkForExistKey(request.pageUrl)) {
-			console.log ('yes')
-		} else {
-			console.log('no')
-		}
-
 		Storage.readFrom(request.pageUrl, function (siteStyle) {
-			sendResponse({
-				currentData: siteStyle,
-				success: true  /*need make check for exist data in storage*/
-			});
+			if (siteStyle) {
+				notifyMessage("There is searched key: '" + request.pageUrl + "' in Storage");
+				sendResponse({
+					currentData: siteStyle,
+					success: true
+				});
+			} else  {
+				notifyMessage("No key in Storage");
+				sendResponse({
+					success: false
+				});
+			}
 		});
 	}
 	else if (request.greeting === "loadDataAndSave") {
-		Storage.readAndSaveFrom(request.pageUrl);
-		sendResponse({
-			success: true  /*need make check for exist data in storage*/
+		Storage.readFrom(request.pageUrl, function (siteStyle) {
+			if (siteStyle) {
+				notifyMessage("There is searched key: '" + request.pageUrl + "' in Storage, try to save to page");
+				StyleOnPage.addThem(siteStyle);
+				sendResponse({
+					success: true
+				});
+			} else  {
+				notifyMessage("No key in Storage");
+				sendResponse({
+					success: false
+				});
+			}
 		});
 	}
 	else {
