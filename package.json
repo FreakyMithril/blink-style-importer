@@ -1,7 +1,8 @@
 {
   "name": "blink-style-importer",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Chrome browser extension for adding custom css styles on any page, with cloud synchronization for save styles across devices",
+  "homepage": "https://github.com/uamithril/blink-style-importer",
   "main": "index.js",
   "license": "MIT",
   "engines": {
