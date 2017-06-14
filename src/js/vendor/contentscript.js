@@ -1,8 +1,7 @@
 let notifyMessage = word => {
-	//return false;
+	return false;
 	console.log('Blink extension content script says: ', word);
 };
-
 
 
 let Storage = {
@@ -12,11 +11,20 @@ let Storage = {
 		chrome.storage.sync.set(items);
 		notifyMessage('Data successfully saved to the storage!');
 	},
-	readFrom: (searchWord, fn) => {
+	readCurrent: (searchWord, fn) => {
 		chrome.storage.sync.get(searchWord, function (items) {
 			fn(items[searchWord] || false);
 		});
-		notifyMessage('Just readed data from storage'); /*need make check for exist data in storage when use function*/
+		notifyMessage('Just readed searched data from storage');
+	},
+	readAll: () => {
+		chrome.storage.sync.get(null, function (items) {
+			console.log(items);
+		});
+	},
+	clearCurrent: (wordToRemove) => {
+		chrome.storage.sync.remove(wordToRemove);
+		notifyMessage('Styles data for current site cleared!');
 	},
 	clearAll: () => {
 		chrome.storage.sync.clear();
@@ -71,7 +79,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	let dataUrl = request.url || {};
 	let data = request.styles || {};
 
-	if (request.greeting === "removeData") {
+	if (request.greeting === "removeAllData") {
 		if (StyleOnPage.removeThem()) {
 			Storage.clearAll();
 			sendResponse({
@@ -79,21 +87,33 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			});
 		}
 		else {
-			Storage.clearAll();
 			sendResponse({
 				success: false
 			});
 		}
 	}
-	else if (request.greeting === "loadData") {
-		Storage.readFrom(request.pageUrl, function (siteStyle) {
+	if (request.greeting === "removeCurrentData") {
+		if (StyleOnPage.removeThem()) {
+			Storage.clearCurrent(request.pageUrl);
+			sendResponse({
+				success: true
+			});
+		}
+		else {
+			sendResponse({
+				success: false
+			});
+		}
+	}
+	else if (request.greeting === "loadCurrentData") {
+		Storage.readCurrent(request.pageUrl, function (siteStyle) {
 			if (siteStyle) {
 				notifyMessage("There is searched key: '" + request.pageUrl + "' in Storage");
 				sendResponse({
 					currentData: siteStyle,
 					success: true
 				});
-			} else  {
+			} else {
 				notifyMessage("No key in Storage");
 				sendResponse({
 					success: false
@@ -101,15 +121,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			}
 		});
 	}
+	else if (request.greeting === "loadAllData") {
+		Storage.readAll();
+		notifyMessage("Data Loaded");
+		sendResponse({
+			success: true
+		});
+	}
 	else if (request.greeting === "loadDataAndSave") {
-		Storage.readFrom(request.pageUrl, function (siteStyle) {
+		Storage.readCurrent(request.pageUrl, function (siteStyle) {
 			if (siteStyle) {
 				notifyMessage("There is searched key: '" + request.pageUrl + "' in Storage, try to save to page");
 				StyleOnPage.addThem(siteStyle);
 				sendResponse({
 					success: true
 				});
-			} else  {
+			} else {
 				notifyMessage("No key in Storage");
 				sendResponse({
 					success: false

@@ -1,6 +1,8 @@
 let submitStyles = document.getElementById('submitStyles');
 let clearStyles = document.getElementById('clearStyles');
+let clearCurrentSite = document.getElementById('removeCurrentSite');
 let loadStyles = document.getElementById('loadStyles');
+let loadAllStyles = document.getElementById('showAllStorageData');
 let textAreaLog = document.getElementById('customCsslog');
 let labelForNewCss = document.getElementById('cssStylesLabel');
 let snackbarContainer = document.getElementById('toastLog');
@@ -8,7 +10,7 @@ let textAreaHtml = document.getElementById('cssStylesArea');
 
 let tempData = {};
 
-let saveTempData = (url, styles) =>{
+let saveTempData = (url, styles) => {
 	tempData.url = url;
 	tempData.styles = styles;
 };
@@ -76,21 +78,19 @@ let Blink = {
 			});
 		}
 	},
-	clearOnPage: () => {
-		let blinkStyles = document.getElementById('blinkStyles');
-
+	clearAll: () => {
 		labelForNewCss.innerHTML = 'Send submit for clearing form';
 
 		chrome.tabs.query({active: true, currentWindow: true}, tabs => {
 			let elementUrl = extractHostname(tabs[0].url);
 			chrome.tabs.sendMessage(tabs[0].id, {
-				greeting: "removeData",
+				greeting: "removeAllData",
 				pageUrl: elementUrl
 			}, response => {
 				labelForNewCss.innerHTML = 'Submit new Blink styles on page';
 				notifyMessage('Send data to extension');
 				if (response.success === true) {
-					notifyMessage('Removed current styles');
+					notifyMessage('Removed all styles from storage');
 				}
 				else {
 					notifyMessage('Something wrong');
@@ -98,15 +98,33 @@ let Blink = {
 			});
 		});
 	},
-	loadFromPage: () => {
-		let blinkStyles = document.getElementById('blinkStyles');
-
-		labelForNewCss.innerHTML = 'Sending submit for load Styles';
+	clearThisPage: () => {
+		labelForNewCss.innerHTML = 'Send submit for clearing site form';
 
 		chrome.tabs.query({active: true, currentWindow: true}, tabs => {
 			let elementUrl = extractHostname(tabs[0].url);
 			chrome.tabs.sendMessage(tabs[0].id, {
-				greeting: "loadData",
+				greeting: "removeCurrentData",
+				pageUrl: elementUrl
+			}, response => {
+				labelForNewCss.innerHTML = 'Submit new Blink styles on page';
+				notifyMessage('Send data to extension');
+				if (response.success === true) {
+					notifyMessage('Removed current site styles from storage');
+				}
+				else {
+					notifyMessage('Something wrong');
+				}
+			});
+		});
+	},
+	loadThisPage: () => {
+		labelForNewCss.innerHTML = 'Sending submit for load site Styles';
+
+		chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+			let elementUrl = extractHostname(tabs[0].url);
+			chrome.tabs.sendMessage(tabs[0].id, {
+				greeting: "loadCurrentData",
 				pageUrl: elementUrl
 			}, response => {
 				labelForNewCss.innerHTML = 'Submit new Blink styles on page';
@@ -117,6 +135,24 @@ let Blink = {
 				}
 				else {
 					notifyMessage('No Styles yet');
+				}
+			});
+		});
+	},
+	loadAll: () => {
+		labelForNewCss.innerHTML = 'Sending submit for load all Styles';
+
+		chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+			chrome.tabs.sendMessage(tabs[0].id, {
+				greeting: "loadAllData"
+			}, response => {
+				labelForNewCss.innerHTML = 'Submit new Blink styles on page';
+				notifyMessage('Send data to extension');
+				if (response.success === true) {
+					notifyMessage('Loaded all styles to console');
+				}
+				else {
+					notifyMessage('No Styles data yet');
 				}
 			});
 		});
@@ -131,16 +167,28 @@ submitStyles.addEventListener('click', event => {
 
 clearStyles.addEventListener('click', event => {
 	event.preventDefault();
-	notifyMessage('Sending submit for clear form');
-	Blink.clearOnPage();
+	notifyMessage('Sending submit for clear form and all styles');
+	Blink.clearAll();
+});
+
+clearCurrentSite.addEventListener('click', event => {
+	event.preventDefault();
+	notifyMessage('Sending submit for clear form and site styles');
+	Blink.clearThisPage();
 });
 
 loadStyles.addEventListener('click', event => {
 	event.preventDefault();
 	notifyMessage('Sending submit for load Styles');
-	Blink.loadFromPage();
+	Blink.loadThisPage();
+});
+
+loadAllStyles.addEventListener('click', event => {
+	event.preventDefault();
+	notifyMessage('Sending submit for load all Styles');
+	Blink.loadAll();
 });
 
 chrome.tabs.executeScript(null, {
-	code: Blink.loadFromPage()
+	code: Blink.loadThisPage()
 });
