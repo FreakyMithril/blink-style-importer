@@ -1,8 +1,8 @@
 {
   "name": "Blink Style Importer",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "manifest_version": 2,
-  "description": "Chrome browser extension for adding custom css styles on any page",
+  "description": "Chrome browser extension for adding custom css styles on any page, with Chrome browser cloud synchronization for save styles across devices",
   "icons": {
     "16": "img/icons/icon16.png",
     "48": "img/icons/icon48.png",
