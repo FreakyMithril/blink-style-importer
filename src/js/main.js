@@ -1,7 +1,6 @@
 let submitStyles = document.getElementById('submitStyles');
 let clearStyles = document.getElementById('clearStyles');
 let clearCurrentSite = document.getElementById('removeCurrentSite');
-let loadStyles = document.getElementById('loadStyles');
 let loadAllStyles = document.getElementById('showAllStorageData');
 let textAreaLog = document.getElementById('customCsslog');
 let labelForNewCss = document.getElementById('cssStylesLabel');
@@ -175,12 +174,6 @@ clearCurrentSite.addEventListener('click', event => {
 	event.preventDefault();
 	notifyMessage('Sending submit for clear form and site styles');
 	Blink.clearThisPage();
-});
-
-loadStyles.addEventListener('click', event => {
-	event.preventDefault();
-	notifyMessage('Sending submit for load Styles');
-	Blink.loadThisPage();
 });
 
 loadAllStyles.addEventListener('click', event => {
