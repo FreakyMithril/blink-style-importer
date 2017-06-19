@@ -28,13 +28,15 @@ let myCodeMirror = CodeMirror.fromTextArea(textAreaHtml, {
 	matchBrackets: true
 });
 
-let notifyMessage = word => {
+let notifyMessage = (word, showBar = false) => {
 	textAreaLog.innerHTML += "<tr><td class='mdl-data-table__cell--non-numeric'>" + word + "</td></tr>";
-	let data = {
-		message: 'Log: ' + word,
-		timeout: 1000
-	};
-	snackbarContainer.MaterialSnackbar.showSnackbar(data);
+	if(showBar) {
+    let data = {
+      message: word,
+      timeout: 500
+    };
+    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+  }
 };
 
 let extractHostname = url => {
@@ -160,25 +162,25 @@ let Blink = {
 
 submitStyles.addEventListener('click', event => {
 	event.preventDefault();
-	notifyMessage('Sending form Submission');
+	notifyMessage('Sending form Submission', true);
 	Blink.sendToPage();
 });
 
 clearStyles.addEventListener('click', event => {
 	event.preventDefault();
-	notifyMessage('Sending submit for clear form and all styles');
+	notifyMessage('Sending submit for clear all styles', true);
 	Blink.clearAll();
 });
 
 clearCurrentSite.addEventListener('click', event => {
 	event.preventDefault();
-	notifyMessage('Sending submit for clear form and site styles');
+	notifyMessage('Sending submit for clear site styles', true);
 	Blink.clearThisPage();
 });
 
 loadAllStyles.addEventListener('click', event => {
 	event.preventDefault();
-	notifyMessage('Sending submit for load all Styles');
+	notifyMessage('Sending submit for load all Styles', true);
 	Blink.loadAll();
 });
 
