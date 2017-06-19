@@ -1,5 +1,5 @@
 let notifyMessage = word => {
-	//return false;
+	return false;
 	console.log('Blink extension background script says: ', word);
 };
 
@@ -27,6 +27,14 @@ let pageLoad = {
 			}, response => {
 				notifyMessage('Send data to page');
 				if (response.success === true) {
+
+          chrome.browserAction.setIcon({
+            tabId: tabs[0].id,
+            path: {
+              '128': 'img/icons/icon128on.png'
+            }
+          });
+
 					notifyMessage('Loaded current styles');
 				}
 				else {
