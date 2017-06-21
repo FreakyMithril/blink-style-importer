@@ -1,7 +1,8 @@
 ### 0.1.7
   * Change: Removed Load button
   * Change: Now Notifications messages appear less often
-  * Added: Now when load page with Blink styles, extension icon will change
+  * Added: Script will try load page first time if it real url page only
+  * Added: Now when load page with Blink styles, extension icon will be changed
 ### 0.1.6
   * Publish to store and added git home page
 ### 0.1.5
