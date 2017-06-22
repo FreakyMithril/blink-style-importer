@@ -1,6 +1,35 @@
 let notifyMessage = word => {
-	return false;
+	//return false;
 	console.log('Blink extension content script says: ', word);
+};
+
+let OptionsStorage = {
+  install: () => {
+    let allOptions = {
+      options: {
+        logTab: true,
+        modalBackground: '#3f51b5'
+      }
+    };
+    chrome.storage.sync.set(allOptions);
+    notifyMessage('Default options successfully installed in the storage!');
+  },
+  saveIn: (name, option) => {
+    chrome.storage.sync.get(null, function (items) {
+      let newOptions = items.options;
+      notifyMessage(newOptions);
+      newOptions[name] = option;
+      notifyMessage(newOptions);
+      chrome.storage.sync.remove('options');
+      chrome.storage.sync.set(newOptions);
+      notifyMessage('All Fine');
+    });
+    notifyMessage('Option successfully saved to the storage!');
+  },
+  clearAll: () => {
+    chrome.storage.sync.remove('options');
+    notifyMessage('Options cleared!');
+  }
 };
 
 
@@ -80,19 +109,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	let data = request.styles || {};
 
 	if (request.greeting === "removeAllData") {
-		if (StyleOnPage.removeThem()) {
-			Storage.clearAll();
-			sendResponse({
-				success: true
-			});
-		}
-		else {
-			sendResponse({
-				success: false
-			});
-		}
+    Storage.clearAll();
+    sendResponse({
+      success: true
+    });
 	}
-	if (request.greeting === "removeCurrentData") {
+	else if (request.greeting === "removeCurrentData") {
 		if (StyleOnPage.removeThem()) {
 			Storage.clearCurrent(request.pageUrl);
 			sendResponse({
@@ -144,6 +166,24 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			}
 		});
 	}
+  else if (request.greeting === "optionsClear") {
+    OptionsStorage.clearAll();
+    sendResponse({
+      success: true
+    });
+  }
+  else if (request.greeting === "optionsDefault") {
+    OptionsStorage.install();
+    sendResponse({
+      success: true
+    });
+  }
+  else if (request.greeting === "optionsSave") {
+    OptionsStorage.saveIn('testname', 'testoption');
+    sendResponse({
+      success: true
+    });
+  }
 	else {
 		if (StyleOnPage.addThem(data)) {
 			Storage.saveIn(dataUrl, data);
