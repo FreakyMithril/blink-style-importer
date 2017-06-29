@@ -16,9 +16,10 @@ let OptionsStorage = {
   },
   saveIn: (name, option) => {
     chrome.storage.sync.get(null, function (items) {
-      let newOptions = items.options;
+      let newOptions = {};
+      newOptions.options = items.options;
       notifyMessage(newOptions);
-      newOptions[name] = option;
+      newOptions.options[name] = option;
       notifyMessage(newOptions);
       chrome.storage.sync.remove('options');
       chrome.storage.sync.set(newOptions);
