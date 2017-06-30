@@ -8,7 +8,9 @@ let OptionsStorage = {
     let allOptions = {
       options: {
         logTab: true,
-        modalBackground: '#3f51b5'
+        modalBackground: '#3f51b5',
+        autoSave: false,
+        logToConsole: false
       }
     };
     chrome.storage.sync.set(allOptions);

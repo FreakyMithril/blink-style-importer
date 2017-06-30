@@ -1,6 +1,7 @@
 const mainTab = document.getElementById('fixed-tab-1');
 const optionsPage = document.getElementById('optionsPage');
 const snackbarContainer = document.getElementById('toastLog');
+let pending;
 
 let notifyMessage = (word, showBar = false) => {
   let textAreaLog = document.getElementById('customCsslog');
@@ -14,6 +15,27 @@ let notifyMessage = (word, showBar = false) => {
       timeout: 500
     };
     snackbarContainer.MaterialSnackbar.showSnackbar(data);
+  }
+};
+
+let addClass = (selector, myClass) => {
+  // get all elements that match our selector
+  let elements = document.querySelectorAll(selector);
+
+  // add class to all chosen elements
+  for (let i=0; i<elements.length; i++) {
+    elements[i].classList.add(myClass);
+  }
+};
+
+let removeClass = (selector, myClass) => {
+
+  // get all elements that match our selector
+  let elements = document.querySelectorAll(selector);
+
+  // remove class from all chosen elements
+  for (let i=0; i<elements.length; i++) {
+    elements[i].classList.remove(myClass);
   }
 };
 
@@ -189,6 +211,18 @@ if (mainTab) {
     event.preventDefault();
     notifyMessage('Sending submit for load all Styles', true);
     Blink.loadAll();
+  });
+
+  let updateAutoSave = () => {
+    notifyMessage('Code changed', true);
+    Blink.sendToPage();
+    removeClass('#progressNoEnd', 'active');
+  };
+
+  myCodeMirror.on("change", function() {
+    clearTimeout(pending);
+    addClass('#progressNoEnd', 'active');
+    pending = setTimeout(updateAutoSave, 1000);
   });
 
   // load script when modal is opened

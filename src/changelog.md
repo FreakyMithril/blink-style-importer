@@ -1,3 +1,7 @@
+### xxx
+  * Change: When press clear button, it will also clear redactor area
+  * Added: Loading Progress bar for few events
+  * Added: Autosave feature
 ### 0.1.7
   * Change: Removed Load button
   * Change: Now Notifications messages appear less often
