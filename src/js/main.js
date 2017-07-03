@@ -214,7 +214,6 @@ if (mainTab) {
   });
 
   let updateAutoSave = () => {
-    notifyMessage('Code changed', true);
     Blink.sendToPage();
     removeClass('#progressNoEnd', 'active');
   };
