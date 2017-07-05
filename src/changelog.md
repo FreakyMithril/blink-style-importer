@@ -1,5 +1,6 @@
 ### xxx
   * Change: When press clear button, it will also clear redactor area
+  * Added: Options page. And add versions feature for future updates
   * Added: Loading Progress bar for few events
   * Added: Autosave feature
 ### 0.1.7

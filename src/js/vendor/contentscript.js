@@ -1,3 +1,4 @@
+let optionsVersion = 1;
 let notifyMessage = word => {
   //return false;
   console.log('Blink extension content script says: ', word);
@@ -7,6 +8,7 @@ let OptionsStorage = {
   install: () => {
     let allOptions = {
       options: {
+        optionsVersion: optionsVersion,
         logTab: true,
         modalBackground: '#3f51b5',
         autoSave: true,
@@ -16,7 +18,7 @@ let OptionsStorage = {
     chrome.storage.sync.set(allOptions);
     notifyMessage('Default options successfully installed in the storage!');
   },
-  saveIn: (name, option) => {
+  saveOne: (name, option) => {
     chrome.storage.sync.get(null, function (items) {
       let newOptions = {};
       newOptions.options = items.options;
@@ -25,16 +27,27 @@ let OptionsStorage = {
       notifyMessage(newOptions);
       chrome.storage.sync.remove('options');
       chrome.storage.sync.set(newOptions);
-      notifyMessage('All Fine');
+      notifyMessage('All Fine, Saved one item');
     });
-    notifyMessage('Option successfully saved to the storage!');
+    notifyMessage('Option successfully added to the storage!');
+  },
+  saveAll: (object) => {
+    chrome.storage.sync.get(null, function () {
+      let newOptions = {};
+      newOptions.options = object;
+      newOptions.options['optionsVersion'] = optionsVersion;
+      notifyMessage(newOptions);
+      chrome.storage.sync.remove('options');
+      chrome.storage.sync.set(newOptions);
+      notifyMessage('All Fine, saved all new Options');
+    });
+    notifyMessage('Option successfully updated in the storage!');
   },
   clearAll: () => {
     chrome.storage.sync.remove('options');
     notifyMessage('Options cleared!');
   }
 };
-
 
 let Storage = {
   saveIn: (url, styles) => {
@@ -183,7 +196,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case 'optionsSave':
-      OptionsStorage.saveIn('testname', 'testoption');
+      OptionsStorage.saveAll(request.optionsData);
       sendResponse({
         success: true
       });

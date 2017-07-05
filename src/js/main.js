@@ -5,11 +5,11 @@ let pending;
 
 let notifyMessage = (word, showBar = false) => {
   let textAreaLog = document.getElementById('customCsslog');
-  if(textAreaLog) {
+  if (textAreaLog) {
     textAreaLog.innerHTML += "<tr><td class='mdl-data-table__cell--non-numeric'>" + word + "</td></tr>";
   }
 
-  if(showBar) {
+  if (showBar) {
     let data = {
       message: word,
       timeout: 500
@@ -23,7 +23,7 @@ let addClass = (selector, myClass) => {
   let elements = document.querySelectorAll(selector);
 
   // add class to all chosen elements
-  for (let i=0; i<elements.length; i++) {
+  for (let i = 0; i < elements.length; i++) {
     elements[i].classList.add(myClass);
   }
 };
@@ -34,7 +34,7 @@ let removeClass = (selector, myClass) => {
   let elements = document.querySelectorAll(selector);
 
   // remove class from all chosen elements
-  for (let i=0; i<elements.length; i++) {
+  for (let i = 0; i < elements.length; i++) {
     elements[i].classList.remove(myClass);
   }
 };
@@ -218,7 +218,7 @@ if (mainTab) {
     removeClass('#progressNoEnd', 'active');
   };
 
-  myCodeMirror.on("change", function() {
+  myCodeMirror.on("change", function () {
     clearTimeout(pending);
     addClass('#progressNoEnd', 'active');
     pending = setTimeout(updateAutoSave, 1000);
@@ -229,16 +229,32 @@ if (mainTab) {
 }
 
 // scripts for options Tab only
-if(optionsPage) {
+if (optionsPage) {
+  let optionsForm = document.getElementById('optionsForm');
   let clearConfigButton = document.getElementById('clearOptions');
   let installDefaultConfigButton = document.getElementById('installDefaultOptions');
   let saveConfigButton = document.getElementById('saveOptions');
 
+  let getFormValues = () => {
+    let data = {};
+    for (let i = 0; optionsForm.elements.length > i; i++) {
+      let element = optionsForm.elements[i];
+      if (element.type === 'checkbox' || element.type === 'radio') {
+        data[element.name] = element.checked
+      } else {
+        data[element.name] = element.value;
+      }
+    }
+    return data;
+  };
+
   let BlinkOptions = {
     needSave: () => {
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+        let optionsData = getFormValues();
         chrome.tabs.sendMessage(tabs[0].id, {
-          greeting: "optionsSave"
+          greeting: "optionsSave",
+          optionsData: optionsData
         }, response => {
           if (response.success === true) {
             notifyMessage('Options saved in storage', true);

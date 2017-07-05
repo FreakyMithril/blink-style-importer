@@ -62,3 +62,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     pageLoad.init(pageUrl, tabId);
   }
 });
+
+let testing = () => {
+  console.log('test');
+};
+testing();
