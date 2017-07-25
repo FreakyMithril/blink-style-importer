@@ -4,6 +4,11 @@ let notifyMessage = word => {
   console.log('Blink extension content script says: ', word);
 };
 
+let logToConsoleData = (data) => {
+      console.log('Real Stored ugly data: ');
+      console.log(data);
+};
+
 let OptionsStorage = {
   install: () => {
     let allOptions = {
@@ -65,7 +70,7 @@ let Storage = {
   },
   readAll: () => {
     chrome.storage.sync.get(null, function (items) {
-      console.log(items);
+      logToConsoleData(items);
     });
   },
   clearCurrent: (wordToRemove) => {
@@ -86,7 +91,7 @@ let StyleOnPage = {
     let styles = document.createElement('style');
     styles.type = 'text/css';
     styles.id = 'blinkStyles';
-    styles.innerHTML = data;
+    styles.innerHTML = JSON.parse(data); /*convert to native(base) format data*/
     document.getElementsByTagName('body')[0].appendChild(styles);
     notifyMessage('Styles on Page Added');
     return true;
