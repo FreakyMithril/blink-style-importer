@@ -59,8 +59,17 @@ let Storage = {
   saveIn: (url, styles) => {
     let items = {};
     items[url] = styles;
-    chrome.storage.sync.set(items);
-    notifyMessage('Data successfully saved to the storage!');
+    chrome.storage.sync.set(items, function() {
+      if(chrome.runtime.lastError) {
+        console.log(chrome.runtime.lastError.message);
+        notifyMessage('Data NOT been saved in the storage!');
+        //chrome.storage.local.set(items);
+        //chrome.storage.sync.remove(url);
+      } else {
+        notifyMessage('Data successfully saved to the storage!');
+        //chrome.storage.local.remove(url);
+      }
+    });
   },
   readCurrent: (searchWord, fn) => {
     chrome.storage.sync.get(searchWord, function (items) {
