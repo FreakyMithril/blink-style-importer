@@ -1,3 +1,9 @@
+### 0.2.0
+  * Under the hood: Started options page. Added settings versions feature for future updates
+  * Added: Auto-save feature, by default
+  * Added: Loading Progress bar for Auto-save
+  * Change: Editor font size now 14px, by default
+  * Change: Removed Submit button
 ### 0.1.7
   * Change: Removed Load button
   * Change: Now Notifications messages appear less often

@@ -27,3 +27,16 @@ textarea {
 .CodeMirror {
     height: 220px;
 }
+
+#progressNoEnd {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    display: none;
+    &.active {
+        display: block;
+    }
+}
