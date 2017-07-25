@@ -1,6 +1,10 @@
 let notifyMessage = word => {
-  return false;
+  //return false;
   console.log('Blink extension background script says: ', word);
+};
+
+let initBackground = () =>  {
+  console.log('test');
 };
 
 let extractHostname = url => {
@@ -63,7 +67,4 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   }
 });
 
-let testing = () => {
-  console.log('test');
-};
-testing();
+//initBackground();

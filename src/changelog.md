@@ -1,8 +1,9 @@
-### xxx
-  * Change: When press clear button, it will also clear redactor area
-  * Added: Options page. And add versions feature for future updates
-  * Added: Loading Progress bar for few events
-  * Added: Autosave feature
+### 0.2.0
+  * Under the hood: Started options page. Added settings versions feature for future updates
+  * Added: Auto-save feature, by default
+  * Added: Loading Progress bar for Auto-save
+  * Change: Editor font size now 14px, by default
+  * Change: Removed Submit button
 ### 0.1.7
   * Change: Removed Load button
   * Change: Now Notifications messages appear less often

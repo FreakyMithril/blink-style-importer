@@ -1,6 +1,6 @@
-let optionsVersion = 1;
+let optionsVersion = '0.2.0';
 let notifyMessage = word => {
-  //return false;
+  return false;
   console.log('Blink extension content script says: ', word);
 };
 
@@ -9,9 +9,10 @@ let OptionsStorage = {
     let allOptions = {
       options: {
         optionsVersion: optionsVersion,
+        editorFontSize: 14,
         logTab: true,
-        modalBackground: '#3f51b5',
         autoSave: true,
+        autoSaveDelay: 1000,
         logToConsole: false
       }
     };

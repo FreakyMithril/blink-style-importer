@@ -137,7 +137,7 @@ if (mainTab) {
           greeting: "removeCurrentData",
           pageUrl: elementUrl
         }, response => {
-          labelForNewCss.innerHTML = 'Submit new Blink styles on page';
+          labelForNewCss.innerHTML = 'Just close Blink to clear text area';
           notifyMessage('Send data to extension');
           if (response.success === true) {
             notifyMessage('Removed current site styles from storage');
@@ -189,11 +189,11 @@ if (mainTab) {
     }
   };
 
-  submitStyles.addEventListener('click', event => {
-    event.preventDefault();
-    notifyMessage('Sending form Submission', true);
-    Blink.sendToPage();
-  });
+  // submitStyles.addEventListener('click', event => {
+  //   event.preventDefault();
+  //   notifyMessage('Sending form Submission', true);
+  //   Blink.sendToPage();
+  // });
 
   clearStyles.addEventListener('click', event => {
     event.preventDefault();
