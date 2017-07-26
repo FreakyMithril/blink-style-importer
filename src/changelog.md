@@ -1,3 +1,5 @@
+### 0.2.1
+  * Fix: Correct strings save in storage
 ### 0.2.0
   * Under the hood: Started options page. Added settings versions feature for future updates
   * Added: Auto-save feature, by default
