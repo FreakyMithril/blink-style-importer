@@ -4,6 +4,11 @@ let notifyMessage = word => {
   console.log('Blink extension content script says: ', word);
 };
 
+let logToConsoleData = (data) => {
+      console.log('Real Stored ugly data: ');
+      console.log(data);
+};
+
 let OptionsStorage = {
   install: () => {
     let allOptions = {
@@ -54,8 +59,17 @@ let Storage = {
   saveIn: (url, styles) => {
     let items = {};
     items[url] = styles;
-    chrome.storage.sync.set(items);
-    notifyMessage('Data successfully saved to the storage!');
+    chrome.storage.sync.set(items, function() {
+      if(chrome.runtime.lastError) {
+        console.log(chrome.runtime.lastError.message);
+        notifyMessage('Data NOT been saved in the storage!');
+        //chrome.storage.local.set(items);
+        //chrome.storage.sync.remove(url);
+      } else {
+        notifyMessage('Data successfully saved to the storage!');
+        //chrome.storage.local.remove(url);
+      }
+    });
   },
   readCurrent: (searchWord, fn) => {
     chrome.storage.sync.get(searchWord, function (items) {
@@ -65,7 +79,7 @@ let Storage = {
   },
   readAll: () => {
     chrome.storage.sync.get(null, function (items) {
-      console.log(items);
+      logToConsoleData(items);
     });
   },
   clearCurrent: (wordToRemove) => {
@@ -86,7 +100,7 @@ let StyleOnPage = {
     let styles = document.createElement('style');
     styles.type = 'text/css';
     styles.id = 'blinkStyles';
-    styles.innerHTML = data;
+    styles.innerHTML = JSON.parse(data); /*convert to native(base) format data*/
     document.getElementsByTagName('body')[0].appendChild(styles);
     notifyMessage('Styles on Page Added');
     return true;

@@ -1,5 +1,5 @@
 let notifyMessage = word => {
-  //return false;
+  return false;
   console.log('Blink extension background script says: ', word);
 };
 

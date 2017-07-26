@@ -63,7 +63,7 @@ if (mainTab) {
 
   let saveTempData = (url, styles) => {
     tempData.url = url;
-    tempData.styles = styles;
+    tempData.styles = JSON.stringify(styles); /*convert to safe format data*/
   };
 
   let myCodeMirror = CodeMirror.fromTextArea(textAreaHtml, {
@@ -160,7 +160,7 @@ if (mainTab) {
           labelForNewCss.innerHTML = 'Submit new Blink styles on page';
           notifyMessage('Send data to extension');
           if (response.success === true) {
-            myCodeMirror.setValue(response.currentData); //save to blink editor
+            myCodeMirror.setValue(JSON.parse(response.currentData)); /*convert to native() format data*/
             notifyMessage('Loaded current styles');
           }
           else {
