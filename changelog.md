@@ -1,3 +1,6 @@
+### 0.2.2
+  * Added: Alert message if storage for page are full, or text too long
+  * Change: Now icon change right after save or clear blink style
 ### 0.2.1
   * Fix: Correct strings save in storage
 ### 0.2.0
