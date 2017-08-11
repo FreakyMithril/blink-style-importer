@@ -3,9 +3,10 @@ let notifyMessage = word => {
   console.log('Blink extension background script says: ', word);
 };
 
-let initBackground = () =>  {
+let initBackground = () => {
   console.log('test');
 };
+//initBackground();
 
 let extractHostname = url => {
   let hostname;
@@ -43,7 +44,7 @@ let pageLoad = {
       pageUrl: pageUrl
     }, response => {
       notifyMessage('Send data to page');
-      if (response !==undefined && response.success === true) {
+      if (response !== undefined && response.success === true) {
         enableIcon(tabId);
         notifyMessage('Loaded current ' + pageUrl + ' styles');
       }
@@ -59,7 +60,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   if (!/^http?.*$/.test(tab.url)) {
     notifyMessage('Page not correct ' + tab.url);
     return true;
-    /*run only of page is correct*/
+    /*run only if page not correct*/
   }
   if (tab.status === 'complete') {
     let pageUrl = extractHostname(tab.url);
@@ -67,4 +68,18 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   }
 });
 
-//initBackground();
+chrome.extension.onMessage.addListener(function (request, sender) {
+  if (!/^http?.*$/.test(sender.tab.url)) {
+    notifyMessage('Page not correct ' + sender.tab.url);
+    return true;
+    /*run only if page not correct*/
+  }
+  if (request === 'iconEnable') {
+    enableIcon(sender.tab.id);
+    notifyMessage('Icon Enabled');
+  }
+  else if (request === 'iconDisable') {
+    disableIcon(sender.tab.id);
+    notifyMessage('Icon Disabled');
+  }
+});

@@ -1,12 +1,23 @@
-let optionsVersion = '0.2.0';
+let optionsVersion = '0.2.2';
 let notifyMessage = word => {
   return false;
   console.log('Blink extension content script says: ', word);
 };
 
 let logToConsoleData = (data) => {
-      console.log('Real Stored ugly data: ');
-      console.log(data);
+  console.log('Real Stored ugly data: ');
+  console.log(data);
+};
+
+let SendToBg = (request) => {
+  switch (request) {
+    case 'iconEnable':
+      chrome.extension.sendMessage('iconEnable');
+      break;
+    case 'iconDisable':
+      chrome.extension.sendMessage('iconDisable');
+      break;
+  }
 };
 
 let OptionsStorage = {
@@ -59,13 +70,15 @@ let Storage = {
   saveIn: (url, styles) => {
     let items = {};
     items[url] = styles;
-    chrome.storage.sync.set(items, function() {
-      if(chrome.runtime.lastError) {
-        console.log(chrome.runtime.lastError.message);
+    chrome.storage.sync.set(items, function () {
+      if (chrome.runtime.lastError) {
+        console.warn("Whoops.. " + chrome.runtime.lastError.message);
         notifyMessage('Data NOT been saved in the storage!');
+        alert("Whoops.. " + chrome.runtime.lastError.message);
         //chrome.storage.local.set(items);
         //chrome.storage.sync.remove(url);
-      } else {
+      }
+      else {
         notifyMessage('Data successfully saved to the storage!');
         //chrome.storage.local.remove(url);
       }
@@ -73,13 +86,25 @@ let Storage = {
   },
   readCurrent: (searchWord, fn) => {
     chrome.storage.sync.get(searchWord, function (items) {
-      fn(items[searchWord] || false);
+      if (chrome.runtime.lastError) {
+        console.warn("Whoops.. " + chrome.runtime.lastError.message);
+        alert("Whoops.. " + chrome.runtime.lastError.message);
+      }
+      else {
+        fn(items[searchWord] || false);
+      }
     });
     notifyMessage('Just readed searched data from storage');
   },
   readAll: () => {
     chrome.storage.sync.get(null, function (items) {
-      logToConsoleData(items);
+      if (chrome.runtime.lastError) {
+        console.warn("Whoops.. " + chrome.runtime.lastError.message);
+        alert("Whoops.. " + chrome.runtime.lastError.message);
+      }
+      else {
+        logToConsoleData(items);
+      }
     });
   },
   clearCurrent: (wordToRemove) => {
@@ -100,7 +125,8 @@ let StyleOnPage = {
     let styles = document.createElement('style');
     styles.type = 'text/css';
     styles.id = 'blinkStyles';
-    styles.innerHTML = JSON.parse(data); /*convert to native(base) format data*/
+    styles.innerHTML = JSON.parse(data);
+    /*convert to native(base) format data*/
     document.getElementsByTagName('body')[0].appendChild(styles);
     notifyMessage('Styles on Page Added');
     return true;
@@ -152,6 +178,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({
           success: true
         });
+        SendToBg('iconDisable');
       }
       else {
         sendResponse({
@@ -223,6 +250,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           currentData: data,
           success: true
         });
+        SendToBg('iconEnable');
       }
       else {
         sendResponse({
