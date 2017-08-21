@@ -41,7 +41,7 @@ gulp.task('copyVendorJs', () => {
 	])
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(babel({
-			presets: ['es2015']
+			presets: ['env']
 		}))
 		.pipe(uglify())
 		.pipe(gulp.dest('dist/js/vendor'))
@@ -210,7 +210,7 @@ gulp.task('scripts', () => {
 	])
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(babel({
-			presets: ['es2015']
+			presets: ['env']
 		}))
 		.pipe(concat('main.js')) /*build single file*/
 		.pipe(uglify())
@@ -255,7 +255,7 @@ gulp.task('copyVendorJsDev', () => {
 	])
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(babel({
-			presets: ['es2015']
+			presets: ['env']
 		}))
 		.pipe(sourcemaps.write())
 
@@ -420,7 +420,7 @@ gulp.task('scriptsDev', () => {
 		.pipe(plumber(plumberErrorNotify))
 		.pipe(sourcemaps.init())
 		.pipe(babel({
-			presets: ['es2015']
+			presets: ['env']
 		}))
 		.pipe(concat('main.js')) /*build single file*/
 		.pipe(uglify({
