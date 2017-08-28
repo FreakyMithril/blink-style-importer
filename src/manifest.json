@@ -20,13 +20,24 @@
     "activeTab",
     "tabs",
     "<all_urls>",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "identity"
   ],
+  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'",
+  "oauth2": {
+    "client_id": "832079971060-f6h161s4hnt9c71o2i8v522if1l5ht99.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile"
+    ]
+  },
+  "key":
+  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgkxkMLnHqW0gK5IGl8H/pndPYj2ydglCzaKg3FyokpTu+xNCoFybHDWFUsFqZ/Qkdmmr/wXI1Zq9P61ZTYIAmBjxZplEYLCF2ZxktZW94LhF9mHC9WfO+i2USt/5HIwhO9kxevipm5bP4ya8zVwQUaRUMYOiIPy3yqld5pQc4r985Cf0fxYofgfphEw4sICByhuirqVNmQ3sqWzzmNQHvhAp+WnGefo4CZcGtKwUsSRyYCn5quFEGeDyz4U3Caak7L66f+gc7Oc/rlF3cJuj3NeV28HQWjlOi5MxcFmdbDSkVuZzSvOmTAR9+a4egFDkTulCAlkRG+da4612LDyrxQIDAQAB",
   "omnibox": {
     "keyword": "extension"
   },
   "background": {
-    "scripts": ["js/vendor/background.js"]
+    "page": "background.html"
   },
   "content_scripts": [
     {

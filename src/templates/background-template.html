@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <meta name="theme-color" content="#3f51b5">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div class="mdl-layout__container"><!-- start #wrap -->
+    <div class="mdl-layout mdl-js-layout {{ wrapClass }}">
+        {% block content %}{% endblock %}
+    </div>
+</div><!-- end #wrap -->
+
+{% block footer %}
+<div id="toastLog" class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action" type="button"></button>
+</div>
+<div id="progressNoEnd" class="mdl-progress mdl-js-progress mdl-progress--indeterminate"></div>
+{% endblock %}
+
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+<script src="js/vendor/background.js"></script>
+</body>
+</html>
