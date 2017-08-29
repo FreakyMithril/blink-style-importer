@@ -1,4 +1,4 @@
-let optionsVersion = '0.2.2';
+let appVersion = '0.2.3';
 let notifyMessage = word => {
   return false;
   console.log('Blink extension content script says: ', word);
@@ -24,7 +24,7 @@ let OptionsStorage = {
   install: () => {
     let allOptions = {
       options: {
-        optionsVersion: optionsVersion,
+        appVersion: appVersion,
         editorFontSize: 14,
         logTab: true,
         autoSave: true,
@@ -52,7 +52,7 @@ let OptionsStorage = {
     chrome.storage.sync.get(null, function () {
       let newOptions = {};
       newOptions.options = object;
-      newOptions.options['optionsVersion'] = optionsVersion;
+      newOptions.options['appVersion'] = appVersion;
       notifyMessage(newOptions);
       chrome.storage.sync.remove('options');
       chrome.storage.sync.set(newOptions);

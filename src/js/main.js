@@ -1,3 +1,4 @@
+let appVersion = '0.2.3';
 const mainTab = document.getElementById('fixed-tab-1');
 const optionsTab = document.getElementById('optionsTab');
 const profileTab = document.getElementById('profileTab');
@@ -336,34 +337,25 @@ if (profileTab) {
 
   let userProfileWrapper = document.getElementById('userProfileWrapper');
 
-  /**
-   * initApp handles setting up the Firebase context and registering
-   * callbacks for the auth status.
-   *
-   * The core initialization is in firebase.App - this is the glue class
-   * which stores configuration. We provide an app name here to allow
-   * distinguishing multiple app instances.
-   *
-   * This method also registers a listener with firebase.auth().onAuthStateChanged.
-   * This listener is called when the user is signed in or out, and that
-   * is where we update the UI.
-   *
-   * When signed in, we also authenticate to the Firebase Realtime Database.
-   */
+  let registerUser = (user) => {
+    const userRef = firebase.database().ref('users/' + user.uid);
+    userRef.update({
+      name: user.displayName,
+      email: user.email,
+      photoUrl: user.photoURL,
+      lastConnectTime: new Date().toString(),
+      appVersion: appVersion
+    });
+  };
+
+
   function initApp() {
-    // Listen for auth state changes.
     // [START authstatelistener]
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         // User is signed in.
-        let email = user.email;
-        let emailVerified = user.emailVerified;
-        let photoURL = user.photoURL;
-        let isAnonymous = user.isAnonymous;
-        let uid = user.uid;
-        let providerData = user.providerData;
+        registerUser(user);
 
-        // [START_EXCLUDE]
         profilePageTitle.textContent = user.displayName;
         quickStartButton.textContent = 'Sign out';
         quickStartButton.classList.remove('mdl-button--colored');
@@ -379,10 +371,9 @@ if (profileTab) {
 								</div>
 							</div>
         `;
-        // [END_EXCLUDE]
-      } else {
+      }
+      else {
         // Let's try to get a Google auth token programmatically.
-        // [START_EXCLUDE]
         profilePageTitle.textContent = 'Welcome';
         quickStartButton.textContent = 'Sign-in with Google';
         quickStartButton.classList.remove('mdl-button--accent');
@@ -394,7 +385,6 @@ if (profileTab) {
 								<img class="img-responsive" src="img/welcome_card.jpg" alt="welcome">
 							</div>
         `;
-        // [END_EXCLUDE]
       }
       quickStartButton.disabled = false;
     });
@@ -412,9 +402,11 @@ if (profileTab) {
     chrome.identity.getAuthToken({interactive: !!interactive}, function (token) {
       if (chrome.runtime.lastError && !interactive) {
         console.log('It was not possible to get a token programmatically.');
-      } else if (chrome.runtime.lastError) {
+      }
+      else if (chrome.runtime.lastError) {
         console.error(chrome.runtime.lastError);
-      } else if (token) {
+      }
+      else if (token) {
         // Authrorize Firebase with the OAuth Access Token.
         let credential = firebase.auth.GoogleAuthProvider.credential(null, token);
         firebase.auth().signInWithCredential(credential).catch(function (error) {

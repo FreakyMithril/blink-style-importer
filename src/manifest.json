@@ -1,6 +1,6 @@
 {
   "name": "Blink Style Importer",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "manifest_version": 2,
   "description": "Adding custom css styles on any page, with cloud synchronization for save short styles across devices",
   "homepage_url": "https://github.com/uamithril/blink-style-importer",
