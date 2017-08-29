@@ -1,15 +1,5 @@
 {% extends "background-template.html" %} <!--Our page template-->
-{% set wrapClass = "mdl-layout--fixed-header mdl-layout--fixed-tabs" %}
+{% set wrapClass = "" %}
 {% set title = "Background" %} <!--Set our page title-->
-
 {% block content %} <!--Start Put page data-->
-<header class="mdl-layout__header">
-	<div class="mdl-layout__header-row">
-		<span class="mdl-layout-title">Background page</span>
-	</div>
-</header>
-{% include 'parts/side-menu-part.html' %}
-<main class="mdl-layout__content">
-	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum est excepturi iste nostrum quod! A commodi doloribus illum laboriosam magnam minima necessitatibus perspiciatis rem, saepe, soluta suscipit totam velit veritatis?
-</main>
 {% endblock %} <!--end Put page data block-->

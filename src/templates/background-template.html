@@ -10,20 +10,8 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-<div class="mdl-layout__container"><!-- start #wrap -->
-    <div class="mdl-layout mdl-js-layout {{ wrapClass }}">
-        {% block content %}{% endblock %}
-    </div>
-</div><!-- end #wrap -->
-
-{% block footer %}
-<div id="toastLog" class="mdl-js-snackbar mdl-snackbar">
-    <div class="mdl-snackbar__text"></div>
-    <button class="mdl-snackbar__action" type="button"></button>
-</div>
-<div id="progressNoEnd" class="mdl-progress mdl-js-progress mdl-progress--indeterminate"></div>
-{% endblock %}
-
+{% block content %}{% endblock %}
+{% block footer %}{% endblock %}
 <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
 <script src="js/vendor/background.js"></script>
 </body>

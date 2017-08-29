@@ -26,3 +26,41 @@ body {
 .CodeMirror {
     font-size: 14px;
 }
+
+.user-avatar-wrap {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 30px auto;
+    img {
+        max-width: 100%;
+        height: auto;
+        width: 100%;
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
+.img-responsive {
+    max-width: 100%;
+    height: auto;
+}

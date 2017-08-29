@@ -1,7 +1,7 @@
 const mainTab = document.getElementById('fixed-tab-1');
 const optionsTab = document.getElementById('optionsTab');
 const profileTab = document.getElementById('profileTab');
-const snackbarContainer = document.getElementById('toastLog');
+const snackBarContainer = document.getElementById('toastLog');
 let pending;
 
 let notifyMessage = (word, showBar = false) => {
@@ -15,7 +15,7 @@ let notifyMessage = (word, showBar = false) => {
       message: word,
       timeout: 500
     };
-    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+    snackBarContainer.MaterialSnackbar.showSnackbar(data);
   }
 };
 
@@ -64,7 +64,8 @@ if (mainTab) {
 
   let saveTempData = (url, styles) => {
     tempData.url = url;
-    tempData.styles = JSON.stringify(styles); /*convert to safe format data*/
+    tempData.styles = JSON.stringify(styles);
+    /*convert to safe format data*/
   };
 
   let myCodeMirror = CodeMirror.fromTextArea(textAreaHtml, {
@@ -161,7 +162,8 @@ if (mainTab) {
           labelForNewCss.innerHTML = 'Submit new Blink styles on page';
           notifyMessage('Send data to extension');
           if (response.success === true) {
-            myCodeMirror.setValue(JSON.parse(response.currentData)); /*convert to native() format data*/
+            myCodeMirror.setValue(JSON.parse(response.currentData));
+            /*convert to native() format data*/
             notifyMessage('Loaded current styles');
           }
           else {
@@ -325,6 +327,15 @@ if (profileTab) {
   };
   firebase.initializeApp(firebaseConfig);
 
+  let quickStartButton = document.getElementById('quickStartButton');
+
+  let profilePageTitle = document.getElementById('profilePageTitle');
+
+  let noUserWrapper = document.getElementById('noUserWrapper');
+  let userExistWrapper = document.getElementById('userExistWrapper');
+
+  let userProfileWrapper = document.getElementById('userProfileWrapper');
+
   /**
    * initApp handles setting up the Firebase context and registering
    * callbacks for the auth status.
@@ -342,34 +353,54 @@ if (profileTab) {
   function initApp() {
     // Listen for auth state changes.
     // [START authstatelistener]
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         // User is signed in.
-        var displayName = user.displayName;
-        var email = user.email;
-        var emailVerified = user.emailVerified;
-        var photoURL = user.photoURL;
-        var isAnonymous = user.isAnonymous;
-        var uid = user.uid;
-        var providerData = user.providerData;
+        let email = user.email;
+        let emailVerified = user.emailVerified;
+        let photoURL = user.photoURL;
+        let isAnonymous = user.isAnonymous;
+        let uid = user.uid;
+        let providerData = user.providerData;
+
         // [START_EXCLUDE]
-        document.getElementById('quickstart-button').textContent = 'Sign out';
-        document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
-        document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
+        profilePageTitle.textContent = user.displayName;
+        quickStartButton.textContent = 'Sign out';
+        quickStartButton.classList.remove('mdl-button--colored');
+        quickStartButton.classList.add('mdl-button--accent');
+
+        userProfileWrapper.innerHTML = `
+              <div class="user-block" id="userExistWrapper">
+								<div class="user-avatar-wrap">
+									<img src="${user.photoURL}" alt="${user.displayName}">
+								</div>
+								<div class="text-center">
+								  <h5>${user.email}</h5>
+								</div>
+							</div>
+        `;
         // [END_EXCLUDE]
       } else {
         // Let's try to get a Google auth token programmatically.
         // [START_EXCLUDE]
-        document.getElementById('quickstart-button').textContent = 'Sign-in with Google';
-        document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
-        document.getElementById('quickstart-account-details').textContent = 'null';
+        profilePageTitle.textContent = 'Welcome';
+        quickStartButton.textContent = 'Sign-in with Google';
+        quickStartButton.classList.remove('mdl-button--accent');
+        quickStartButton.classList.add('mdl-button--colored');
+
+        userProfileWrapper.innerHTML = `
+              <div class="user-block" id="noUserWrapper">
+								<p>Please Sign-In, to have more features. This is alpha version of profiles and options. Only profiles are working. More come in future</p>
+								<img class="img-responsive" src="img/welcome_card.jpg" alt="welcome">
+							</div>
+        `;
         // [END_EXCLUDE]
       }
-      document.getElementById('quickstart-button').disabled = false;
+      quickStartButton.disabled = false;
     });
     // [END authstatelistener]
 
-    document.getElementById('quickstart-button').addEventListener('click', startSignIn, false);
+    quickStartButton.addEventListener('click', startSignIn, false);
   }
 
   /**
@@ -378,18 +409,18 @@ if (profileTab) {
    */
   function startAuth(interactive) {
     // Request an OAuth token from the Chrome Identity API.
-    chrome.identity.getAuthToken({interactive: !!interactive}, function(token) {
+    chrome.identity.getAuthToken({interactive: !!interactive}, function (token) {
       if (chrome.runtime.lastError && !interactive) {
         console.log('It was not possible to get a token programmatically.');
-      } else if(chrome.runtime.lastError) {
+      } else if (chrome.runtime.lastError) {
         console.error(chrome.runtime.lastError);
       } else if (token) {
         // Authrorize Firebase with the OAuth Access Token.
-        var credential = firebase.auth.GoogleAuthProvider.credential(null, token);
-        firebase.auth().signInWithCredential(credential).catch(function(error) {
+        let credential = firebase.auth.GoogleAuthProvider.credential(null, token);
+        firebase.auth().signInWithCredential(credential).catch(function (error) {
           // The OAuth token might have been invalidated. Lets' remove it from cache.
           if (error.code === 'auth/invalid-credential') {
-            chrome.identity.removeCachedAuthToken({token: token}, function() {
+            chrome.identity.removeCachedAuthToken({token: token}, function () {
               startAuth(interactive);
             });
           }
@@ -404,7 +435,7 @@ if (profileTab) {
    * Starts the sign-in process.
    */
   function startSignIn() {
-    document.getElementById('quickstart-button').disabled = true;
+    quickStartButton.disabled = true;
     if (firebase.auth().currentUser) {
       firebase.auth().signOut();
     } else {
@@ -412,7 +443,7 @@ if (profileTab) {
     }
   }
 
-  window.onload = function() {
+  window.onload = function () {
     initApp();
   };
 
