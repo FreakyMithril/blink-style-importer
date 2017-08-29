@@ -1,3 +1,7 @@
+### 0.2.3
+  * Under the hood: Changed few permissions and background page for operate with Google Firebase
+  * Added: Profile page, with Google login
+  * Added: Google Firebase, for store accounts/options, now only store profiles
 ### 0.2.2
   * Added: Alert message if storage for page are full, or text too long
   * Change: Now icon change right after save or clear blink style
