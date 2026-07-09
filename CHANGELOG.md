@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0 (unreleased)
+
+- Change: default autosave delay is now 10 seconds (was 1s) — fewer surprise saves while typing; adjust it in Options
+- Under the hood: extension size cut from 2.26MB to 0.87MB — icon fonts replaced by a 2.7KB subset of the icons actually used
+- Under the hood: Playwright end-to-end test suite (7 scenarios) and GitLab CI on every merge request
+- Under the hood: build output moved from `.output/` to `dist/` (WXT `outDir`)
+
 ## 1.0.0
 
 Full rewrite for Manifest V3 (Chrome removes MV2 extensions from the store on Aug 31, 2026).
