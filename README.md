@@ -4,6 +4,8 @@ Chrome extension for adding your own custom CSS styles on any page — with a re
 
 **[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/blink-style-importer/lbgchcpklbidcojffpncpclnkopchcff)**
 
+![Editor with live preview](assets/screenshot-editor.png)
+
 ## Features
 
 - CSS code editor (CodeMirror 6) with autocomplete, linting, and bracket matching
@@ -11,6 +13,8 @@ Chrome extension for adding your own custom CSS styles on any page — with a re
 - Styles are saved per site and applied automatically on every visit
 - Synced across your devices through your Chrome account
 - Minimal permissions, no tracking, no network requests — see the [Privacy Policy](PRIVACY.md)
+
+![Options](assets/screenshot-options.png)
 
 ## Version history
 

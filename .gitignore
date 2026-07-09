@@ -1,0 +1,10 @@
+# working files from the source checkout — not part of the public page
+node_modules/
+.output/
+.wxt/
+.idea/
+docs/
+tmp/
+dist/
+coverage/
+.DS_Store
