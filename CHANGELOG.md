@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0 (unreleased)
+## 1.1.0
 
 - Change: default autosave delay is now 10 seconds (was 1s) — fewer surprise saves while typing; adjust it in Options
 - Under the hood: extension size cut from 2.26MB to 0.87MB — icon fonts replaced by a 2.7KB subset of the icons actually used
