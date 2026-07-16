@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0
+
+- Fix: a failed save now shows an error message instead of failing silently — e.g. when a style is over the ~8KB Chrome sync limit per site
+- Change: styles now apply at the very start of page load (no more flash of the unstyled site) while still overriding the page's own rules
+- Fix: "Clear site" / "Clear all" no longer trigger a leftover autosave with a second "Saved" message
+- Change: clearer extension description on the Chrome Web Store
+
 ## 1.1.0
 
 - Change: default autosave delay is now 10 seconds (was 1s) — fewer surprise saves while typing; adjust it in Options
